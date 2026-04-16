@@ -3,7 +3,7 @@ import process from "node:process";
 
 export const PLATFORM_PACKAGES = [
   {
-    packageName: "@agent-ascii/darwin-arm64",
+    packageName: "@vinniai/darwin-arm64",
     workspaceDir: "packages/npm/darwin-arm64",
     nodeOs: "darwin",
     nodeArch: "arm64",
@@ -13,7 +13,7 @@ export const PLATFORM_PACKAGES = [
     binaryRelativePath: "bin/agent-ascii"
   },
   {
-    packageName: "@agent-ascii/darwin-x64",
+    packageName: "@vinniai/darwin-x64",
     workspaceDir: "packages/npm/darwin-x64",
     nodeOs: "darwin",
     nodeArch: "x64",
@@ -23,7 +23,7 @@ export const PLATFORM_PACKAGES = [
     binaryRelativePath: "bin/agent-ascii"
   },
   {
-    packageName: "@agent-ascii/linux-arm64",
+    packageName: "@vinniai/linux-arm64",
     workspaceDir: "packages/npm/linux-arm64",
     nodeOs: "linux",
     nodeArch: "arm64",
@@ -33,7 +33,7 @@ export const PLATFORM_PACKAGES = [
     binaryRelativePath: "bin/agent-ascii"
   },
   {
-    packageName: "@agent-ascii/linux-x64",
+    packageName: "@vinniai/linux-x64",
     workspaceDir: "packages/npm/linux-x64",
     nodeOs: "linux",
     nodeArch: "x64",
@@ -43,7 +43,7 @@ export const PLATFORM_PACKAGES = [
     binaryRelativePath: "bin/agent-ascii"
   },
   {
-    packageName: "@agent-ascii/win32-x64",
+    packageName: "@vinniai/win32-x64",
     workspaceDir: "packages/npm/win32-x64",
     nodeOs: "win32",
     nodeArch: "x64",

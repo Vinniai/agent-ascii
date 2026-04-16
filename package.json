@@ -20,11 +20,11 @@
     "smoke": "bash ./scripts/ci-smoke.sh"
   },
   "optionalDependencies": {
-    "@agent-ascii/darwin-arm64": "1.0.0",
-    "@agent-ascii/darwin-x64": "1.0.0",
-    "@agent-ascii/linux-arm64": "1.0.0",
-    "@agent-ascii/linux-x64": "1.0.0",
-    "@agent-ascii/win32-x64": "1.0.0"
+    "@vinniai/darwin-arm64": "1.0.0",
+    "@vinniai/darwin-x64": "1.0.0",
+    "@vinniai/linux-arm64": "1.0.0",
+    "@vinniai/linux-x64": "1.0.0",
+    "@vinniai/win32-x64": "1.0.0"
   },
   "engines": {
     "node": ">=18"
