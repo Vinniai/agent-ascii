@@ -103,10 +103,13 @@ jobs:
             -o "${{ matrix.package_dir }}/bin/${{ matrix.binary_name }}" \
             .
 
+      - name: Setup npm authentication
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
+          chmod 600 ~/.npmrc
+
       - name: Publish platform package
         run: npm publish "${{ matrix.package_dir }}" --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   publish-root-package:
     needs: publish-platform-packages
@@ -128,7 +131,10 @@ jobs:
       - name: Validate release metadata
         run: npm run release:check
 
+      - name: Setup npm authentication
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
+          chmod 600 ~/.npmrc
+
       - name: Publish root package
         run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
