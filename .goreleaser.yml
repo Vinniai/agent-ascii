@@ -54,7 +54,7 @@ brews:
 
     tap:
       owner: Vinniai
-      name: homebrew-agent-ascii
+      repo: homebrew-agent-ascii
 
     url_template: https://github.com/Vinniai/agent-ascii/releases/download/{{ .Tag }}/{{ .ArtifactName }}
 
