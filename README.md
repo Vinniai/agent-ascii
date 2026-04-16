@@ -46,7 +46,7 @@ Once the package is published to npm, the default entrypoint is:
 npx agent-ascii ./image.png
 ```
 
-The npm package downloads the correct native binary for the current platform during install, or builds it from source when working from a git checkout with Go installed.
+The npm package installs a prebuilt OS-specific binary package for the current platform. End users do not need Go installed.
 
 ### npm Global Install
 

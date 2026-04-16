@@ -14,17 +14,11 @@ Files:
 
 ## Local Testing
 
-From a git checkout, the npm package tries to build the native binary from source during install if `go` is available.
+Published npm installs use prebuilt platform packages, so end users do not need Go. A source checkout is different: the repo does not commit binaries, so local testing from git still requires Go to build a fallback binary in `vendor/`.
 
 ```bash
 npm install
-npx agent-ascii examples/screenshots/apple-mobile.png
-```
-
-If `go` was not installed when `npm install` ran, install Go and rebuild:
-
-```bash
-npm rebuild agent-ascii
+./scripts/test-local.sh
 ```
 
 Or build the binary directly:

@@ -14,11 +14,14 @@
     "README.md"
   ],
   "scripts": {
-    "postinstall": "node ./scripts/postinstall.mjs"
+    "release:check": "node ./scripts/validate-release.mjs"
   },
-  "dependencies": {
-    "extract-zip": "^2.0.1",
-    "tar": "^7.4.3"
+  "optionalDependencies": {
+    "@agent-ascii/darwin-arm64": "1.14.0",
+    "@agent-ascii/darwin-x64": "1.14.0",
+    "@agent-ascii/linux-arm64": "1.14.0",
+    "@agent-ascii/linux-x64": "1.14.0",
+    "@agent-ascii/win32-x64": "1.14.0"
   },
   "engines": {
     "node": ">=18"

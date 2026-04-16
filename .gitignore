@@ -4,5 +4,6 @@ snap/
 dist/
 node_modules/
 vendor/
+packages/npm/*/bin/*
 build.sh
 todo.txt

@@ -1,0 +1,22 @@
+{
+  "name": "@agent-ascii/darwin-arm64",
+  "version": "1.14.0",
+  "description": "macOS arm64 binary for agent-ascii.",
+  "license": "Apache-2.0",
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "arm64"
+  ],
+  "files": [
+    "bin",
+    "README.md"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vinniai/agent-ascii.git"
+  },
+  "homepage": "https://github.com/Vinniai/agent-ascii",
+  "preferUnplugged": true
+}
