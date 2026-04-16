@@ -67,9 +67,12 @@ func DefaultFlags() Flags {
 		SaveBackgroundColor: [4]int{0, 0, 0, 100},
 		Braille:             false,
 		Threshold:           128,
-		Dither:              false,
+		Dither:              true,
 		Layout:              false,
 		OnlySave:            false,
+		SaveTxtHistory:      false,
+		DiffVsLast:          false,
+		DiffLastFail:        false,
 	}
 }
 
@@ -89,6 +92,9 @@ func Convert(filePath string, flags Flags) (string, error) {
 	height = flags.Height
 	complex = flags.Complex
 	saveTxtPath = flags.SaveTxtPath
+	saveTxtHistory = flags.SaveTxtHistory
+	diffVsLast = flags.DiffVsLast
+	diffLastFail = flags.DiffLastFail
 	saveImagePath = flags.SaveImagePath
 	saveGifPath = flags.SaveGifPath
 	negative = flags.Negative

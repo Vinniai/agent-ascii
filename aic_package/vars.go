@@ -36,6 +36,16 @@ type Flags struct {
 	// Path to save ascii art .txt file
 	SaveTxtPath string
 
+	// When true with SaveTxtPath, write timestamped snapshots and *-ascii-art-latest.txt
+	// instead of only overwriting a single *-ascii-art.txt file.
+	SaveTxtHistory bool
+
+	// When true with SaveTxtHistory, print a unified diff vs the previous snapshot to stderr.
+	DiffVsLast bool
+
+	// When true with DiffVsLast, return ErrDiffLastChanged if the diff is non-empty (CI gate).
+	DiffLastFail bool
+
 	// Path to save ascii art .png file
 	SaveImagePath string
 
@@ -110,28 +120,31 @@ type Flags struct {
 }
 
 var (
-	dimensions    []int
-	width         int
-	height        int
-	complex       bool
-	saveTxtPath   string
-	saveImagePath string
-	saveGifPath   string
-	grayscale     bool
-	negative      bool
-	colored       bool
-	colorBg       bool
-	customMap     string
-	flipX         bool
-	flipY         bool
-	full          bool
-	fontPath      string
-	fontColor     [3]int
-	saveBgColor   [4]int
-	braille       bool
-	threshold     int
-	dither        bool
-	layout        bool
-	onlySave      bool
-	inputIsGif    bool
+	dimensions     []int
+	width          int
+	height         int
+	complex        bool
+	saveTxtPath    string
+	saveTxtHistory bool
+	diffVsLast     bool
+	diffLastFail   bool
+	saveImagePath  string
+	saveGifPath    string
+	grayscale      bool
+	negative       bool
+	colored        bool
+	colorBg        bool
+	customMap      string
+	flipX          bool
+	flipY          bool
+	full           bool
+	fontPath       string
+	fontColor      [3]int
+	saveBgColor    [4]int
+	braille        bool
+	threshold      int
+	dither         bool
+	layout         bool
+	onlySave       bool
+	inputIsGif     bool
 )

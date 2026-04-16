@@ -18,6 +18,7 @@ package aic_package
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"image"
 	"os"
@@ -95,7 +96,9 @@ func pathIsImage(imagePath, urlImgName string, pathIsURl bool, urlImgBytes, pipe
 			urlImgName,
 			onlySave,
 		); err != nil {
-
+			if errors.Is(err, ErrDiffLastChanged) {
+				return "", err
+			}
 			return "", fmt.Errorf("can't save file: %v", err)
 		}
 	}

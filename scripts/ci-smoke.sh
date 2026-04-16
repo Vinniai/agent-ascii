@@ -5,6 +5,9 @@ set -euo pipefail
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$ROOT_DIR"
 
+# Deterministic single-file saves (CI env would otherwise default --save-txt-history on).
+unset CI || true
+
 export TERM="${TERM:-xterm-256color}"
 export COLORTERM="${COLORTERM:-truecolor}"
 
@@ -56,3 +59,12 @@ test -f .agent-ascii-out-ci/apple-mobile-ascii-art.txt
 test -f .agent-ascii-out-ci/google-desktop-ascii-art.txt
 test -f .agent-ascii-out-ci/layout-google-ascii-art.txt
 test -f .agent-ascii-out-ci/piped-img-ascii-art.txt
+
+AGENT_ASCII_BINARY_PATH="${TEMP_DIR}/${BIN_NAME}" node ./bin/agent-ascii.js diff \
+  examples/screenshots/apple-mobile.png \
+  examples/screenshots/apple-mobile.png \
+  --width 40
+
+AGENT_ASCII_BINARY_PATH="${TEMP_DIR}/${BIN_NAME}" node ./bin/agent-ascii.js diff --text \
+  .agent-ascii-out-ci/apple-mobile-ascii-art.txt \
+  .agent-ascii-out-ci/apple-mobile-ascii-art.txt

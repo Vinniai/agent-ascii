@@ -17,6 +17,7 @@ limitations under the License.
 package cmd
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"strings"
@@ -30,31 +31,34 @@ import (
 
 var (
 	// Flags
-	cfgFile       string
-	complex       bool
-	dimensions    []int
-	width         int
-	height        int
-	saveTxtPath   string
-	saveImagePath string
-	saveGifPath   string
-	negative      bool
-	formatsTrue   bool
-	colored       bool
-	colorBg       bool
-	grayscale     bool
-	customMap     string
-	flipX         bool
-	flipY         bool
-	full          bool
-	fontFile      string
-	fontColor     []int
-	saveBgColor   []int
-	braille       bool
-	threshold     int
-	dither        bool
-	layout        bool
-	onlySave      bool
+	cfgFile        string
+	complex        bool
+	dimensions     []int
+	width          int
+	height         int
+	saveTxtPath    string
+	saveTxtHistory bool
+	diffVsLast     bool
+	diffLastFail   bool
+	saveImagePath  string
+	saveGifPath    string
+	negative       bool
+	formatsTrue    bool
+	colored        bool
+	colorBg        bool
+	grayscale      bool
+	customMap      string
+	flipX          bool
+	flipY          bool
+	full           bool
+	fontFile       string
+	fontColor      []int
+	saveBgColor    []int
+	braille        bool
+	threshold      int
+	dither         bool
+	layout         bool
+	onlySave       bool
 
 	// Root commands
 	rootCmd = &cobra.Command{
@@ -63,6 +67,9 @@ var (
 		Version: version.Version,
 		Long:    "This tool converts images into ascii art and prints them on the terminal.\nFurther configuration can be managed with flags.",
 
+		// Required so positional image paths still work after registering subcommands (e.g. diff).
+		Args: cobra.ArbitraryArgs,
+
 		// Not RunE since help text is getting larger and seeing it for every error impacts user experience
 		Run: func(cmd *cobra.Command, args []string) {
 
@@ -70,39 +77,22 @@ var (
 				return
 			}
 
-			flags := aic_package.Flags{
-				Complex:             complex,
-				Dimensions:          dimensions,
-				Width:               width,
-				Height:              height,
-				SaveTxtPath:         saveTxtPath,
-				SaveImagePath:       saveImagePath,
-				SaveGifPath:         saveGifPath,
-				Negative:            negative,
-				Colored:             colored,
-				CharBackgroundColor: colorBg,
-				Grayscale:           grayscale,
-				CustomMap:           customMap,
-				FlipX:               flipX,
-				FlipY:               flipY,
-				Full:                full,
-				FontFilePath:        fontFile,
-				FontColor:           [3]int{fontColor[0], fontColor[1], fontColor[2]},
-				SaveBackgroundColor: [4]int{saveBgColor[0], saveBgColor[1], saveBgColor[2], saveBgColor[3]},
-				Braille:             braille,
-				Threshold:           threshold,
-				Dither:              dither,
-				Layout:              layout,
-				OnlySave:            onlySave,
-			}
+			flags := buildFlags()
 
 			if args[0] == "-" {
-				printAscii(args[0], flags)
+				if err := printAscii(args[0], flags); err != nil {
+					if errors.Is(err, aic_package.ErrDiffLastChanged) {
+						os.Exit(1)
+					}
+				}
 				return
 			}
 
 			for _, imagePath := range args {
 				if err := printAscii(imagePath, flags); err != nil {
+					if errors.Is(err, aic_package.ErrDiffLastChanged) {
+						os.Exit(1)
+					}
 					return
 				}
 			}
@@ -112,9 +102,11 @@ var (
 
 func printAscii(imagePath string, flags aic_package.Flags) error {
 
-	if asciiArt, err := aic_package.Convert(imagePath, flags); err == nil {
-		fmt.Printf("%s", asciiArt)
-	} else {
+	asciiArt, err := aic_package.Convert(imagePath, flags)
+	if err != nil {
+		if errors.Is(err, aic_package.ErrDiffLastChanged) {
+			return err
+		}
 		fmt.Printf("Error: %v\n", err)
 
 		// Because this error will then be thrown for every image path/url passed
@@ -123,7 +115,9 @@ func printAscii(imagePath string, flags aic_package.Flags) error {
 			fmt.Println()
 			return err
 		}
+		return err
 	}
+	fmt.Printf("%s", asciiArt)
 	if !onlySave {
 		fmt.Println()
 	}
@@ -154,7 +148,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVarP(&customMap, "map", "m", "", "Custom ASCII characters from darkest to lightest (e.g., \" .-+#@\")")
 	rootCmd.PersistentFlags().BoolVarP(&braille, "braille", "b", false, "Use braille characters instead of ASCII")
 	rootCmd.PersistentFlags().IntVar(&threshold, "threshold", 128, "Threshold for braille conversion (0-255, default: 128)")
-	rootCmd.PersistentFlags().BoolVar(&dither, "dither", false, "Apply dithering for braille conversion")
+	rootCmd.PersistentFlags().BoolVarP(&dither, "dither", "D", true, "Apply dithering for braille conversion (no-op without --braille; use --dither=false to disable)")
 	rootCmd.PersistentFlags().BoolVar(&layout, "layout", false, "Optimize for UI/webpage layout inspection")
 	rootCmd.PersistentFlags().BoolVarP(&grayscale, "grayscale", "g", false, "Convert to grayscale")
 	rootCmd.PersistentFlags().BoolVarP(&complex, "complex", "c", false, "Use extended ASCII character range for higher quality")
@@ -164,6 +158,10 @@ func init() {
 	rootCmd.PersistentFlags().BoolVarP(&flipY, "flipY", "y", false, "Flip vertically")
 	rootCmd.PersistentFlags().StringVarP(&saveImagePath, "save-img", "s", "", "Save as PNG image (e.g., . for current directory)")
 	rootCmd.PersistentFlags().StringVar(&saveTxtPath, "save-txt", "", "Save as text file")
+	ci := os.Getenv("CI") != ""
+	rootCmd.PersistentFlags().BoolVar(&saveTxtHistory, "save-txt-history", ci, "With --save-txt, keep timestamped snapshots and *-ascii-art-latest.txt (default on when CI is set)")
+	rootCmd.PersistentFlags().BoolVar(&diffVsLast, "diff-vs-last", false, "With --save-txt-history, print unified diff vs previous snapshot to stderr")
+	rootCmd.PersistentFlags().BoolVar(&diffLastFail, "diff-last-fail", false, "With --diff-vs-last, exit 1 when the diff is non-empty")
 	rootCmd.PersistentFlags().StringVar(&saveGifPath, "save-gif", "", "Save GIF as ASCII art GIF")
 	rootCmd.PersistentFlags().IntSliceVar(&saveBgColor, "save-bg", []int{0, 0, 0, 100}, "Background color for saved images (RGBA)")
 	rootCmd.PersistentFlags().StringVar(&fontFile, "font", "", "Font file path for saved images (.ttf)")

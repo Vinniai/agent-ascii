@@ -10,6 +10,7 @@ require (
 	github.com/makeworld-the-better-one/dither/v2 v2.2.0
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/nathan-fiscaletti/consolesize-go v0.0.0-20210105204122-a87d9f614b9d
+	github.com/pmezard/go-difflib v1.0.0
 	github.com/spf13/cobra v1.1.3
 	github.com/spf13/viper v1.7.1
 	golang.org/x/image v0.0.0-20210628002857-a66eb6448b8d

@@ -21,8 +21,19 @@ import (
 	"path"
 )
 
+// validationOpts adjusts rules for subcommands such as diff (two independent conversions).
+type validationOpts struct {
+	allowMultipleGifs  bool
+	allowGifWithNonGif bool
+	ignoreOnlySave     bool
+}
+
 // Check input and flag values for detecting errors or invalid inputs
 func checkInputAndFlags(args []string) bool {
+	return checkInputAndFlagsEx(args, validationOpts{})
+}
+
+func checkInputAndFlagsEx(args []string, o validationOpts) bool {
 
 	gifCount := 0
 	gifPresent := false
@@ -44,12 +55,12 @@ func checkInputAndFlags(args []string) bool {
 		}
 	}
 
-	if gifPresent && nonGifPresent && !onlySave {
+	if gifPresent && nonGifPresent && !onlySave && !o.allowGifWithNonGif {
 		fmt.Printf("Error: There are other inputs along with GIFs\nDue to the potential looping nature of GIFs, non-GIFs must not be supplied alongside\n\n")
 		return true
 	}
 
-	if gifCount > 1 && !onlySave {
+	if gifCount > 1 && !onlySave && !o.allowMultipleGifs {
 		fmt.Printf("Error: There are multiple GIFs supplied\nDue to the potential looping nature of GIFs, only one GIF per command is supported\n\n")
 		return true
 	}
@@ -167,13 +178,20 @@ func checkInputAndFlags(args []string) bool {
 		return true
 	}
 
-	if dither && !braille {
-		fmt.Printf("Error: image dithering is only reserved for --braille flag\n\n")
+	if !o.ignoreOnlySave {
+		if (saveTxtPath == "" && saveImagePath == "" && saveGifPath == "") && onlySave {
+			fmt.Printf("Error: you need to supply one of --save-img, --save-txt or --save-gif for using --only-save\n\n")
+			return true
+		}
+	}
+
+	if saveTxtPath == "" && (diffVsLast || diffLastFail) {
+		fmt.Printf("Error: --diff-vs-last and --diff-last-fail require --save-txt\n\n")
 		return true
 	}
 
-	if (saveTxtPath == "" && saveImagePath == "" && saveGifPath == "") && onlySave {
-		fmt.Printf("Error: you need to supply one of --save-img, --save-txt or --save-gif for using --only-save\n\n")
+	if !saveTxtHistory && (diffVsLast || diffLastFail) {
+		fmt.Printf("Error: --diff-vs-last and --diff-last-fail require --save-txt-history\n\n")
 		return true
 	}
 

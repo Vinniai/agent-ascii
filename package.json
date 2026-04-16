@@ -18,7 +18,8 @@
     "release:check": "node ./scripts/validate-release.mjs",
     "review:layout": "python3 ./scripts/review-layout.py",
     "skill:install": "bash ./scripts/install-skill.sh",
-    "smoke": "bash ./scripts/ci-smoke.sh"
+    "smoke": "bash ./scripts/ci-smoke.sh",
+    "example:webpage": "bash ./scripts/example-webpage-diff.sh"
   },
   "engines": {
     "node": ">=18"

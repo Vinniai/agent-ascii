@@ -22,6 +22,7 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"path/filepath"
 	"runtime"
 	"strings"
 
@@ -45,17 +46,23 @@ func saveAsciiArt(asciiSet [][]imgManip.AsciiChar, imagePath, savePath, urlImgNa
 	}
 
 	// If path exists
-	if _, err := os.Stat(savePath); !os.IsNotExist(err) {
-		err := os.WriteFile(savePath+saveFileName, []byte(strings.Join(saveAscii, "\n")), 0o666)
-		if err != nil {
-			return err
-		} else if onlySave {
-			fmt.Println("Saved " + savePath + saveFileName)
-		}
-		return nil
-	} else {
+	if _, err := os.Stat(savePath); os.IsNotExist(err) {
 		return fmt.Errorf("save path %v does not exist", savePath)
 	}
+
+	content := strings.Join(saveAscii, "\n")
+	if saveTxtHistory {
+		dir := filepath.Clean(strings.TrimRight(savePath, string(os.PathSeparator)))
+		return saveAsciiArtWithHistory(dir, saveFileName, onlySave, content)
+	}
+
+	if err = os.WriteFile(savePath+saveFileName, []byte(content), 0o666); err != nil {
+		return err
+	}
+	if onlySave {
+		fmt.Println("Saved " + savePath + saveFileName)
+	}
+	return nil
 }
 
 // Returns new image file name along with extension

@@ -1,6 +1,14 @@
 # Example Inputs
 
-This directory contains public website screenshots captured with `agent-browser` for local smoke testing.
+This directory contains public website screenshots captured with `agent-browser` for local smoke testing, plus small HTML examples for layout diffs.
+
+## Web wordmark + layout diff
+
+- `webpage/agent-ascii-basic.html` — centered title
+- `webpage/agent-ascii-top-third.html` — title in the upper third
+- See `webpage/README.md` and run `npm run example:webpage` to regenerate `webpage/layout-diff.txt` (requires Chrome/Chromium for headless PNG capture).
+
+## Screenshots (smoke)
 
 Files:
 

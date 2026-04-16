@@ -25,8 +25,10 @@ Supports both ASCII character maps and braille patterns. Optimized for rendering
   - [Go](#go)
   - [Release Binaries](#release-binaries)
 - [Examples](#examples)
+  - [HTML layout (wordmark diff)](#html-layout-wordmark-diff)
 - [CLI Usage](#cli-usage)
   - [Flags](#flags)
+  - [Comparison / diff](#comparison--diff)
 - [Automation](#automation)
 - [Library Usage](#library-usage)
 - [Packages Used](#packages-used)
@@ -105,7 +107,26 @@ sudo cp agent-ascii /usr/local/bin/
 
 ## Examples
 
-All examples use real screenshots from `examples/screenshots/`. Decrease terminal font size or increase width for best quality.
+Most examples below use real screenshots from `examples/screenshots/`. Decrease terminal font size or increase width for best quality.
+
+### HTML layout (wordmark diff)
+
+Two minimal pages in [`examples/webpage/`](examples/webpage/) render the **agent-ascii** wordmark in **JetBrains Mono** (Google Fonts):
+
+| File | Layout |
+|------|--------|
+| [`agent-ascii-basic.html`](examples/webpage/agent-ascii-basic.html) | Title centered in the viewport |
+| [`agent-ascii-top-third.html`](examples/webpage/agent-ascii-top-third.html) | Same styling; title in the **upper third** (`grid-template-rows: 1fr 2fr`) |
+
+Take screenshots at **800×1200**, run with `--layout`, then compare the saved text outputs:
+
+```bash
+npm run example:webpage
+```
+
+This runs [`scripts/example-webpage-diff.sh`](scripts/example-webpage-diff.sh): headless Chrome screenshots → `examples/webpage/captures/*.png` (gitignored) → braille layout with `--layout --negative --dither` → `*-ascii-art.txt` (gitignored) → unified diff **`examples/webpage/layout-diff.txt`** (checked in).
+
+**Without Chrome:** open each HTML file in a browser, save full-page captures as `captures/basic.png` and `captures/top-third.png`, then follow the manual steps in [`examples/webpage/README.md`](examples/webpage/README.md) (same `diff --text` flow).
 
 ### Basic ASCII (`--width 80`)
 
@@ -141,12 +162,12 @@ agent-ascii examples/screenshots/google-desktop.png --width 80 --braille
   <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/03-braille.png" width="700">
 </p>
 
-### Braille + dither (`--braille --dither`)
+### Braille + dither (`--braille`; dither on by default)
 
-Dithering spreads pixel error across neighbors, giving sharper edges in braille mode.
+Dithering spreads pixel error across neighbors, giving sharper edges in braille mode. **Dithering is enabled by default** with `--braille` (`-D` / `--dither`; use `--dither=false` to match the previous off-by-default behavior).
 
 ```
-agent-ascii examples/screenshots/google-desktop.png --width 80 --braille --dither
+agent-ascii examples/screenshots/google-desktop.png --width 80 --braille
 ```
 
 <p align="center">
@@ -189,10 +210,10 @@ agent-ascii examples/screenshots/apple-mobile.png --width 60 --map " .-=+#@"
   <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/07-complex-map.png" width="500">
 </p>
 
-### Braille + dither on mobile (`--braille --dither`)
+### Braille + dither on mobile (`--braille`)
 
 ```
-agent-ascii examples/screenshots/apple-mobile.png --width 60 --braille --dither
+agent-ascii examples/screenshots/apple-mobile.png --width 60 --braille
 ```
 
 <p align="center">
@@ -222,7 +243,7 @@ cat myImage.png | agent-ascii -
 | `--color` | `-C` | Display in original image colors (requires 24-bit/8-bit terminal) |
 | `--color-bg` | | Apply color to character background instead of foreground |
 | `--braille` | `-b` | Use Unicode braille characters instead of ASCII |
-| `--dither` | | Apply dithering for braille conversion |
+| `--dither` | `-D` | Apply dithering for braille conversion (**default: on**; no-op without `--braille`; `--dither=false` to disable). Short **`-d` is `--dimensions`**, not dither. |
 | `--threshold N` | | Braille on/off threshold (0–255, default: 128) |
 | `--layout` | | Optimize for UI/webpage screenshot inspection |
 | `--complex` | `-c` | Extended ASCII character range for more detail |
@@ -237,12 +258,37 @@ cat myImage.png | agent-ascii -
 | `--flipY` | `-y` | Flip vertically |
 | `--save-img path` | `-s` | Save as PNG to path |
 | `--save-txt path` | | Save as text file |
+| `--save-txt-history` | | With `--save-txt`, write `*-ascii-art-latest.txt` and **overwrite** a dotfile `.*-ascii-art.history` with the **previous** run’s text (same stem each time; no growing append). Git-friendly: ignore the dotfile. Default **on** when `CI` is set; use `--save-txt-history=false` for overwrite-only `*-ascii-art.txt` |
+| `--diff-vs-last` | | With `--save-txt-history`, print a unified diff vs the previous snapshot to **stderr** |
+| `--diff-last-fail` | | With `--save-txt-history`, exit **1** when the new output differs from the previous snapshot (CI gate; combine with `--diff-vs-last` to see the diff) |
 | `--save-gif path` | | Save GIF as ASCII art GIF |
 | `--save-bg R,G,B,A` | | Background color for saved images (RGBA) |
 | `--font path` | | Font .ttf file for saved images |
 | `--font-color R,G,B` | | Font color for output and saved images |
 | `--only-save` | | Skip terminal output when saving |
 | `--formats` | | Show supported input formats |
+
+### Comparison / diff
+
+Compare two rendered outputs with a **unified diff** (similar to `git diff`). ANSI escape sequences are **stripped** before diffing so line changes stay readable when using `--color`. If the raw strings differ only in styling, a notice is printed to **stderr** while the exit code stays **0** (stripped text matches).
+
+**Exit codes:** `0` = same after stripping ANSI, `1` = different, `2` = error.
+
+**Two images (or URLs)** — same flags apply to both conversions; `--save-*` and `--only-save` are ignored for `diff`:
+
+```bash
+agent-ascii diff examples/screenshots/apple-mobile.png examples/screenshots/google-desktop.png --width 40
+```
+
+**Two saved text files** (e.g. from `--save-txt --only-save`):
+
+```bash
+agent-ascii diff --text ./out/before-ascii-art.txt ./out/after-ascii-art.txt
+```
+
+For an end-to-end demo (HTML wordmark pages → screenshots → saved ASCII → **`examples/webpage/layout-diff.txt`**), see [HTML layout (wordmark diff)](#html-layout-wordmark-diff).
+
+**Tracked snapshots over time** — with `--save-txt` and `--save-txt-history` (on by default under `CI`), each run overwrites `*-ascii-art-latest.txt` and **overwrites** `.<name>-ascii-art.history` with the prior run’s text (one slot per stem, not an append log). Previous output for diffing is taken from `latest`, then legacy numbered `*-ascii-art-*.txt` if present, then legacy `*-ascii-art.txt`, then the history dotfile (plain text; older append-only history files are still read for migration). Use `--diff-vs-last` for a git-style unified diff on stderr, and `--diff-last-fail` to fail when output drifts.
 
 ---
 
@@ -302,6 +348,7 @@ func main() {
 - [github.com/disintegration/imaging](https://github.com/disintegration/imaging)
 - [github.com/gookit/color](https://github.com/gookit/color)
 - [github.com/makeworld-the-better-one/dither](https://github.com/makeworld-the-better-one/dither)
+- [github.com/pmezard/go-difflib](https://github.com/pmezard/go-difflib)
 
 ---
 
