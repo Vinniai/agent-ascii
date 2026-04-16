@@ -83,6 +83,10 @@ func pathIsGif(gifPath, urlImgName string, pathIsURl bool, urlImgBytes, pipedInp
 	firstGifFrame := originalGif.Image[0].SubImage(originalGif.Image[0].Rect)
 	firstGifFrameWidth := firstGifFrame.Bounds().Dx()
 	firstGifFrameHeight := firstGifFrame.Bounds().Dy()
+	localWidth := width
+	if shouldUseLayoutAutoWidth() {
+		localWidth = getLayoutAutoWidth(firstGifFrame)
+	}
 
 	// Multi-threaded loop to decrease execution time
 	for i, frame := range originalGif.Image {
@@ -107,17 +111,19 @@ func pathIsGif(gifPath, urlImgName string, pathIsURl bool, urlImgBytes, pipedInp
 
 			var imgSet [][]imgManip.AsciiPixel
 
-			imgSet, err = imgManip.ConvertToAsciiPixels(frameImage, dimensions, width, height, flipX, flipY, full, braille, dither)
+			var layoutHints imgManip.LayoutHints
+			imgSet, layoutHints, err = imgManip.ConvertToAsciiPixels(frameImage, dimensions, localWidth, height, flipX, flipY, full, braille, dither, layout)
 			if err != nil {
 				fmt.Printf("Error: %v\n", err)
 				os.Exit(0)
 			}
 
 			var asciiCharSet [][]imgManip.AsciiChar
+			renderNegative := negative || (layout && layoutHints.PreferNegative)
 			if braille {
-				asciiCharSet, err = imgManip.ConvertToBrailleChars(imgSet, negative, colored, grayscale, colorBg, fontColor, threshold)
+				asciiCharSet, err = imgManip.ConvertToBrailleChars(imgSet, renderNegative, colored, grayscale, colorBg, fontColor, threshold)
 			} else {
-				asciiCharSet, err = imgManip.ConvertToAsciiChars(imgSet, negative, colored, grayscale, complex, colorBg, customMap, fontColor)
+				asciiCharSet, err = imgManip.ConvertToAsciiChars(imgSet, renderNegative, colored, grayscale, complex, colorBg, customMap, fontColor)
 			}
 			if err != nil {
 				fmt.Printf("Error: %v\n", err)

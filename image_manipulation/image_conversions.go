@@ -34,20 +34,27 @@ getting numeric data for ASCII character comparison.
 
 The returned 2D AsciiPixel slice contains each corresponding pixel's values
 */
-func ConvertToAsciiPixels(img image.Image, dimensions []int, width, height int, flipX, flipY, full, isBraille, dither bool) ([][]AsciiPixel, error) {
+func ConvertToAsciiPixels(img image.Image, dimensions []int, width, height int, flipX, flipY, full, isBraille, dither, layout bool) ([][]AsciiPixel, LayoutHints, error) {
 
-	smallImg, err := resizeImage(img, full, isBraille, dimensions, width, height)
+	smallImg, err := resizeImage(img, full, isBraille, dimensions, width, height, layout)
+	layoutHints := LayoutHints{}
 
 	if err != nil {
-		return nil, err
+		return nil, layoutHints, err
+	}
+
+	charDepthImg := smallImg
+	if layout {
+		charDepthImg, layoutHints = optimizeForLayout(smallImg)
 	}
 
 	// We mainatin a dithered image literal along with original image
 	// The colors are kept from original image
 	var ditheredImage image.Image
+	useDither := dither || (layout && layoutHints.PreferDither)
 
-	if isBraille && dither {
-		ditheredImage = ditherImage(smallImg)
+	if isBraille && useDither {
+		ditheredImage = ditherImage(charDepthImg)
 	}
 
 	var imgSet [][]AsciiPixel
@@ -62,14 +69,16 @@ func ConvertToAsciiPixels(img image.Image, dimensions []int, width, height int, 
 
 			oldPixel := smallImg.At(x, y)
 			grayPixel := color.GrayModel.Convert(oldPixel)
+			charPixel := color.GrayModel.Convert(charDepthImg.At(x, y))
 
 			r1, g1, b1, _ := grayPixel.RGBA()
-			charDepth := r1 / 257 // Only Red is needed from RGB for charDepth in AsciiPixel since they have the same value for grayscale images
+			charDepth, _, _, _ := charPixel.RGBA()
+			charDepth = charDepth / 257
 			r1 = uint32(r1 / 257)
 			g1 = uint32(g1 / 257)
 			b1 = uint32(b1 / 257)
 
-			if isBraille && dither {
+			if isBraille && useDither {
 
 				// Change charDepth if image dithering is applied
 				// 		Note that neither grayscale nor original color values are changed.
@@ -103,5 +112,5 @@ func ConvertToAsciiPixels(img image.Image, dimensions []int, width, height int, 
 		imgSet = reverse(imgSet, flipX, flipY)
 	}
 
-	return imgSet, nil
+	return imgSet, layoutHints, nil
 }

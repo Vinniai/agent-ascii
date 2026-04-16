@@ -279,5 +279,5 @@ func getBrailleChar(x, y int, negative bool, imgSet [][]AsciiPixel) string {
 		}
 	}
 
-	return string(brailleChar)
+	return string(rune(brailleChar))
 }

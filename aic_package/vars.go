@@ -99,6 +99,11 @@ type Flags struct {
 	// is meant for braille art. Therefore, it will be ignored if Flags.Braille is false
 	Dither bool
 
+	// Optimize webpage and UI screenshot rendering for terminal layout inspection.
+	// This enables edge-focused preprocessing and defaults to braille, dithering,
+	// and negative mapping unless those flags were already chosen explicitly.
+	Layout bool
+
 	// If Flags.SaveImagePath, Flags.SaveTxtPath or Flags.SaveGifPath are set, then don't
 	// print on terminal
 	OnlySave bool
@@ -126,6 +131,7 @@ var (
 	braille       bool
 	threshold     int
 	dither        bool
+	layout        bool
 	onlySave      bool
 	inputIsGif    bool
 )

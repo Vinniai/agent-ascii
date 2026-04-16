@@ -68,6 +68,7 @@ func DefaultFlags() Flags {
 		Braille:             false,
 		Threshold:           128,
 		Dither:              false,
+		Layout:              false,
 		OnlySave:            false,
 	}
 }
@@ -104,7 +105,14 @@ func Convert(filePath string, flags Flags) (string, error) {
 	braille = flags.Braille
 	threshold = flags.Threshold
 	dither = flags.Dither
+	layout = flags.Layout
 	onlySave = flags.OnlySave
+
+	if layout {
+		if !flags.Braille {
+			braille = true
+		}
+	}
 
 	inputIsGif = path.Ext(filePath) == ".gif"
 

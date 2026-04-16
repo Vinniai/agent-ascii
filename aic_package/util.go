@@ -18,6 +18,7 @@ package aic_package
 
 import (
 	"fmt"
+	"image"
 	"os"
 	"os/exec"
 	"path"
@@ -171,4 +172,23 @@ func clearScreen() {
 func isInputFromPipe() bool {
 	fileInfo, _ := os.Stdin.Stat()
 	return fileInfo.Mode()&os.ModeCharDevice == 0
+}
+
+func shouldUseLayoutAutoWidth() bool {
+	return layout && len(dimensions) == 0 && width == 0 && height == 0 && !full
+}
+
+func getLayoutAutoWidth(img image.Image) int {
+	aspectRatio := float64(img.Bounds().Dx()) / float64(img.Bounds().Dy())
+
+	switch {
+	case aspectRatio >= 1.6:
+		return 120
+	case aspectRatio >= 1.15:
+		return 96
+	case aspectRatio <= 0.75:
+		return 64
+	default:
+		return 80
+	}
 }

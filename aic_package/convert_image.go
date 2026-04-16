@@ -49,17 +49,23 @@ func pathIsImage(imagePath, urlImgName string, pathIsURl bool, urlImgBytes, pipe
 		}
 	}
 
-	imgSet, err := imgManip.ConvertToAsciiPixels(imData, dimensions, width, height, flipX, flipY, full, braille, dither)
+	localWidth := width
+	if shouldUseLayoutAutoWidth() {
+		localWidth = getLayoutAutoWidth(imData)
+	}
+
+	imgSet, layoutHints, err := imgManip.ConvertToAsciiPixels(imData, dimensions, localWidth, height, flipX, flipY, full, braille, dither, layout)
 	if err != nil {
 		return "", err
 	}
 
 	var asciiSet [][]imgManip.AsciiChar
+	renderNegative := negative || (layout && layoutHints.PreferNegative)
 
 	if braille {
-		asciiSet, err = imgManip.ConvertToBrailleChars(imgSet, negative, colored, grayscale, colorBg, fontColor, threshold)
+		asciiSet, err = imgManip.ConvertToBrailleChars(imgSet, renderNegative, colored, grayscale, colorBg, fontColor, threshold)
 	} else {
-		asciiSet, err = imgManip.ConvertToAsciiChars(imgSet, negative, colored, grayscale, complex, colorBg, customMap, fontColor)
+		asciiSet, err = imgManip.ConvertToAsciiChars(imgSet, renderNegative, colored, grayscale, complex, colorBg, customMap, fontColor)
 	}
 	if err != nil {
 		return "", err
