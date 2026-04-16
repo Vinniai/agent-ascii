@@ -14,7 +14,9 @@
     "README.md"
   ],
   "scripts": {
-    "release:check": "node ./scripts/validate-release.mjs"
+    "release:check": "node ./scripts/validate-release.mjs",
+    "skill:install": "bash ./scripts/install-skill.sh",
+    "smoke": "bash ./scripts/ci-smoke.sh"
   },
   "optionalDependencies": {
     "@agent-ascii/darwin-arm64": "1.14.0",

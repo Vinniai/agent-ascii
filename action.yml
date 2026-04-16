@@ -1,0 +1,236 @@
+name: "agent-ascii"
+description: "Render images into ASCII art in GitHub Actions"
+branding:
+  icon: "image"
+  color: "gray-dark"
+
+inputs:
+  paths:
+    description: "Image path, glob, or newline-separated list of image paths to render"
+    required: true
+  flags:
+    description: "Additional raw agent-ascii CLI flags"
+    required: false
+    default: ""
+  output-dir:
+    description: "Directory where saved outputs are written"
+    required: false
+    default: ".agent-ascii-out"
+  save-txt:
+    description: "Save .txt output files"
+    required: false
+    default: "true"
+  save-img:
+    description: "Save .png output files"
+    required: false
+    default: "false"
+  github-token:
+    description: "GitHub token for optional PR comments"
+    required: false
+    default: ""
+  fail-on-error:
+    description: "Whether a render failure should fail the action"
+    required: false
+    default: "true"
+  version:
+    description: "Published npm version to use when source=npm"
+    required: false
+    default: "latest"
+  source:
+    description: "Execution source: npm or local"
+    required: false
+    default: "npm"
+  node-version:
+    description: "Node.js version for the action runtime"
+    required: false
+    default: "22"
+
+outputs:
+  rendered_count:
+    description: "Number of images successfully rendered"
+    value: ${{ steps.render.outputs.rendered_count }}
+  output_dir:
+    description: "Directory containing generated artifacts"
+    value: ${{ steps.render.outputs.output_dir }}
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+
+    - if: ${{ inputs.source == 'local' }}
+      uses: actions/setup-go@v5
+      with:
+        go-version-file: ${{ github.action_path }}/go.mod
+
+    - id: render
+      shell: bash
+      env:
+        INPUT_FLAGS: ${{ inputs.flags }}
+        INPUT_FAIL_ON_ERROR: ${{ inputs.fail-on-error }}
+        INPUT_GITHUB_TOKEN: ${{ inputs.github-token }}
+        INPUT_OUTPUT_DIR: ${{ inputs.output-dir }}
+        INPUT_PATHS: ${{ inputs.paths }}
+        INPUT_SAVE_IMG: ${{ inputs.save-img }}
+        INPUT_SAVE_TXT: ${{ inputs.save-txt }}
+        INPUT_SOURCE: ${{ inputs.source }}
+        INPUT_VERSION: ${{ inputs.version }}
+      run: |
+        set -euo pipefail
+
+        ACTION_ROOT="${GITHUB_ACTION_PATH}"
+        SUMMARY_FILE="${RUNNER_TEMP}/agent-ascii-action-summary.txt"
+        FILE_LIST="${RUNNER_TEMP}/agent-ascii-file-list.txt"
+
+        rm -f "$SUMMARY_FILE" "$FILE_LIST"
+
+        if [[ "$INPUT_OUTPUT_DIR" = /* ]]; then
+          OUTPUT_DIR="$INPUT_OUTPUT_DIR"
+        else
+          OUTPUT_DIR="${GITHUB_WORKSPACE}/${INPUT_OUTPUT_DIR}"
+        fi
+        mkdir -p "$OUTPUT_DIR"
+
+        mapfile -t EXTRA_FLAGS < <(
+          python3 -c 'import shlex, sys; [print(item) for item in shlex.split(sys.argv[1])]' "$INPUT_FLAGS"
+        )
+
+        cd "$GITHUB_WORKSPACE"
+        shopt -s nullglob globstar
+
+        while IFS= read -r raw_entry; do
+          entry="$(printf '%s' "$raw_entry" | sed 's/^[[:space:]]*//; s/[[:space:]]*$//')"
+          if [[ -z "$entry" ]]; then
+            continue
+          fi
+
+          matches=()
+          while IFS= read -r match; do
+            matches+=("$match")
+          done < <(compgen -G "$entry" || true)
+
+          if [[ ${#matches[@]} -eq 0 && -e "$entry" ]]; then
+            matches+=("$entry")
+          fi
+
+          if [[ ${#matches[@]} -eq 0 ]]; then
+            echo "No files matched input: $entry" >&2
+            if [[ "$INPUT_FAIL_ON_ERROR" = "true" ]]; then
+              exit 1
+            fi
+            continue
+          fi
+
+          for match in "${matches[@]}"; do
+            printf '%s\n' "$match" >> "$FILE_LIST"
+          done
+        done <<< "$INPUT_PATHS"
+
+        if [[ ! -f "$FILE_LIST" ]]; then
+          echo "No input files were resolved from the provided paths." >&2
+          exit 1
+        fi
+
+        sort -u "$FILE_LIST" -o "$FILE_LIST"
+        INPUT_COUNT="$(wc -l < "$FILE_LIST" | tr -d '[:space:]')"
+        if [[ "$INPUT_COUNT" -eq 0 ]]; then
+          echo "No input files were resolved from the provided paths." >&2
+          exit 1
+        fi
+
+        if [[ "$INPUT_SOURCE" = "local" ]]; then
+          npm ci --ignore-scripts --prefix "$ACTION_ROOT"
+          mkdir -p "$ACTION_ROOT/vendor"
+          GO_BINARY_NAME="agent-ascii"
+          if [[ "${RUNNER_OS}" = "Windows" ]]; then
+            GO_BINARY_NAME="agent-ascii.exe"
+          fi
+          (
+            cd "$ACTION_ROOT"
+            go build \
+              -ldflags "-s -w -X github.com/Vinniai/agent-ascii/internal/version.Version=local-action" \
+              -o "vendor/${GO_BINARY_NAME}" \
+              .
+          )
+          RUNNER_COMMAND=(node "$ACTION_ROOT/bin/agent-ascii.js")
+        else
+          RUNNER_COMMAND=(npx -y "agent-ascii@${INPUT_VERSION}")
+        fi
+
+        AUTO_FLAGS=()
+        if [[ "$INPUT_SAVE_TXT" = "true" ]]; then
+          AUTO_FLAGS+=(--save-txt "$OUTPUT_DIR")
+        fi
+        if [[ "$INPUT_SAVE_IMG" = "true" ]]; then
+          AUTO_FLAGS+=(--save-img "$OUTPUT_DIR")
+        fi
+        if [[ "$INPUT_SAVE_TXT" = "true" || "$INPUT_SAVE_IMG" = "true" ]]; then
+          AUTO_FLAGS+=(--only-save)
+        fi
+
+        rendered_count=0
+        failed_count=0
+
+        while IFS= read -r input_file; do
+          if [[ -z "$input_file" ]]; then
+            continue
+          fi
+
+          echo "Rendering ${input_file}"
+          if "${RUNNER_COMMAND[@]}" "$input_file" "${AUTO_FLAGS[@]}" "${EXTRA_FLAGS[@]}"; then
+            rendered_count=$((rendered_count + 1))
+          else
+            failed_count=$((failed_count + 1))
+            echo "Render failed for ${input_file}" >&2
+            if [[ "$INPUT_FAIL_ON_ERROR" = "true" ]]; then
+              exit 1
+            fi
+          fi
+        done < "$FILE_LIST"
+
+        {
+          echo "Rendered: ${rendered_count}"
+          echo "Failed: ${failed_count}"
+          echo "Output directory: ${OUTPUT_DIR}"
+        } > "$SUMMARY_FILE"
+
+        echo "rendered_count=${rendered_count}" >> "$GITHUB_OUTPUT"
+        echo "output_dir=${OUTPUT_DIR}" >> "$GITHUB_OUTPUT"
+
+    - if: ${{ inputs.github-token != '' && github.event_name == 'pull_request' }}
+      uses: actions/github-script@v7
+      env:
+        OUTPUT_DIR: ${{ steps.render.outputs.output_dir }}
+        RENDERED_COUNT: ${{ steps.render.outputs.rendered_count }}
+      with:
+        github-token: ${{ inputs.github-token }}
+        script: |
+          const marker = "<!-- agent-ascii -->";
+          const body = [
+            marker,
+            "## agent-ascii",
+            "",
+            `Rendered files: ${process.env.RENDERED_COUNT}`,
+            `Output directory: \`${process.env.OUTPUT_DIR}\``
+          ].join("\n");
+
+          const { data: comments } = await github.rest.issues.listComments({
+            ...context.repo,
+            issue_number: context.issue.number,
+          });
+
+          const previous = comments.find((comment) => comment.body?.startsWith(marker));
+          if (previous) {
+            await github.rest.issues.deleteComment({
+              ...context.repo,
+              comment_id: previous.id,
+            });
+          }
+
+          await github.rest.issues.createComment({
+            ...context.repo,
+            issue_number: context.issue.number,
+            body,
+          });

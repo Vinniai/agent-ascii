@@ -27,10 +27,13 @@ Input formats currently supported:
 -  [Installation](#installation)
 	*  [npx](#npx)
 	*  [npm Global Install](#npm-global-install)
+	*  [GitHub Action](#github-action)
+	*  [Agent Skill](#agent-skill)
 	*  [Go](#go)
 	*  [Release Binaries](#release-binaries)
 -  [CLI Usage](#cli-usage)
 	*  [Flags](#flags)
+-  [Automation](#automation)
 -  [Library Usage](#library-usage)
 -  [Contributing](#contributing)
 -  [Packages Used](#packages-used)
@@ -60,6 +63,36 @@ Then run:
 agent-ascii ./image.png
 ```
 
+### GitHub Action
+
+Use the repo as a reusable GitHub Action:
+
+```yaml
+- uses: Vinniai/agent-ascii@v1.14.0
+  with:
+    paths: |
+      examples/screenshots/apple-mobile.png
+      examples/screenshots/google-desktop.png
+    flags: --width 72
+    output-dir: .agent-ascii-out
+```
+
+By default the action saves `.txt` artifacts and keeps logs quiet with `--only-save`.
+
+### Agent Skill
+
+Install the public skill for supported agent setups:
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/Vinniai/agent-ascii/main/scripts/install-skill.sh)
+```
+
+Manual target override:
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/Vinniai/agent-ascii/main/scripts/install-skill.sh) --dir "$HOME/.codex/skills"
+```
+
 ### Go
 
 ```
@@ -82,6 +115,16 @@ On Windows, place `agent-ascii.exe` in a directory on your `PATH`.
 > **Release note:** `npx agent-ascii` will start working publicly after the first GitHub release asset set and the `agent-ascii` npm package are published with the same version number.
 
 <br>
+
+## Automation
+
+This repo ships three automation surfaces:
+
+- `action.yml`: reusable GitHub Action for CI and PR workflows
+- `skills/agent-ascii/SKILL.md`: public agent skill definition
+- `AGENTS.md`: contributor and in-repo agent rules
+
+Use the checked-in screenshots in `examples/screenshots/` for repeatable smoke tests in CI.
 
 ## CLI Usage
 

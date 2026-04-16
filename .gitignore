@@ -5,5 +5,8 @@ dist/
 node_modules/
 vendor/
 packages/npm/*/bin/*
+.agent-ascii-out
+.agent-ascii-out-ci
+.agent-ascii-action-out
 build.sh
 todo.txt

@@ -1,0 +1,96 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - run: npm ci
+
+      - run: npm run release:check
+
+      - run: npm pack --dry-run
+
+      - name: Pack linux platform package
+        run: |
+          mkdir -p packages/npm/linux-x64/bin
+          go build -o packages/npm/linux-x64/bin/agent-ascii .
+          npm pack --dry-run ./packages/npm/linux-x64
+          rm -f packages/npm/linux-x64/bin/agent-ascii
+
+      - name: Validate skill installer
+        run: |
+          INSTALL_ROOT="$(mktemp -d)"
+          AGENT_ASCII_SKILL_DIR="${INSTALL_ROOT}" bash ./scripts/install-skill.sh
+          test -f "${INSTALL_ROOT}/agent-ascii/SKILL.md"
+
+  smoke:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - run: npm ci
+
+      - run: npm run smoke
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: smoke-artifacts
+          path: .agent-ascii-out-ci
+          if-no-files-found: ignore
+
+  action-selftest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: ./
+        id: action_test
+        with:
+          source: local
+          paths: |
+            examples/screenshots/apple-mobile.png
+            examples/screenshots/google-desktop.png
+          flags: --width 72
+          output-dir: .agent-ascii-action-out
+          save-txt: true
+          save-img: false
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: action-selftest-artifacts
+          path: ${{ steps.action_test.outputs.output_dir }}
+          if-no-files-found: ignore

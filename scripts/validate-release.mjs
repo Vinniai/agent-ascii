@@ -9,6 +9,18 @@ const packageRoot = path.resolve(scriptDir, "..");
 
 const rootPackage = await readJson("package.json");
 const rootVersion = rootPackage.version;
+const requiredFiles = [
+  "AGENTS.md",
+  "action.yml",
+  ".agents/skills/agent-ascii/SKILL.md",
+  "skills/agent-ascii/SKILL.md",
+  "scripts/install-skill.sh",
+  "scripts/ci-smoke.sh"
+];
+
+for (const requiredFile of requiredFiles) {
+  await readText(requiredFile);
+}
 
 for (const platformPackage of PLATFORM_PACKAGES) {
   const workspacePackage = await readJson(
@@ -33,6 +45,10 @@ for (const platformPackage of PLATFORM_PACKAGES) {
 console.log(`Validated release metadata for ${rootPackage.name}@${rootVersion}`);
 
 async function readJson(relativePath) {
+  return JSON.parse(await readText(relativePath));
+}
+
+async function readText(relativePath) {
   const filePath = path.join(packageRoot, relativePath);
-  return JSON.parse(await readFile(filePath, "utf8"));
+  return await readFile(filePath, "utf8");
 }

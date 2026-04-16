@@ -28,6 +28,8 @@ go build -o vendor/agent-ascii .
 npx agent-ascii examples/screenshots/google-desktop.png --width 120
 ```
 
+The repo CI uses these same screenshots through `npm run smoke` and the local `action.yml` self-test workflow.
+
 ## Batch Smoke Test
 
 Use the helper script to run several conversions in a row:
