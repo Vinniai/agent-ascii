@@ -1,0 +1,44 @@
+{
+  "name": "agent-ascii",
+  "version": "1.14.0",
+  "description": "Convert images and GIFs into terminal ASCII art with a native Go CLI exposed through npx.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "bin": {
+    "agent-ascii": "bin/agent-ascii.js"
+  },
+  "files": [
+    "bin",
+    "scripts",
+    "LICENSE.txt",
+    "README.md"
+  ],
+  "scripts": {
+    "postinstall": "node ./scripts/postinstall.mjs"
+  },
+  "dependencies": {
+    "extract-zip": "^2.0.1",
+    "tar": "^7.4.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vinniai/agent-ascii.git"
+  },
+  "homepage": "https://github.com/Vinniai/agent-ascii",
+  "bugs": {
+    "url": "https://github.com/Vinniai/agent-ascii/issues"
+  },
+  "keywords": [
+    "ascii",
+    "ascii-art",
+    "cli",
+    "gif",
+    "image",
+    "braille",
+    "npx"
+  ],
+  "packageManager": "npm@11.6.0"
+}

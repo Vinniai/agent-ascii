@@ -1,0 +1,32 @@
+name: agent-ascii
+base: core22
+version: "1.14.0"
+summary: Convert images and gifs into ascii art
+description: |
+  agent-ascii is a command-line tool that converts images into ascii art and prints
+  them out onto the console. Supported input formats are JPEG/JPG, PNG, WEBP, BMP, TIFF/TIF and GIF.
+  Now supports braille art.
+
+grade: stable
+confinement: strict
+
+license: Apache-2.0
+    
+parts:
+  agent-ascii:
+    plugin: go
+    go-importpath: github.com/Vinniai/agent-ascii
+    source: .
+    build-packages:
+      - gcc
+
+apps:
+  agent-ascii:
+    command: bin/agent-ascii
+    plugs:
+    - home
+    - network
+    
+architectures:
+  - build-on: amd64
+    run-on: [amd64, i386, arm64, armhf, s390x, ppc64el]

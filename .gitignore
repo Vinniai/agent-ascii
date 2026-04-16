@@ -1,0 +1,8 @@
+pics/
+build/
+snap/
+dist/
+node_modules/
+vendor/
+build.sh
+todo.txt

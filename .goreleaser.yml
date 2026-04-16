@@ -1,0 +1,95 @@
+project_name: agent-ascii
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  -
+    binary: agent-ascii
+    env:
+      - CGO_ENABLED=0
+    ldflags:
+      - -s -w -X github.com/Vinniai/agent-ascii/internal/version.Version={{ .Version }}
+    goos:
+      - linux
+      - windows
+      - darwin
+
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  -
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    wrap_in_directory: false
+
+    format_overrides:
+      - goos: windows
+        format: zip
+
+    files:
+      - LICENSE.txt
+      - README.md
+
+checksum:
+  name_template: 'sha256_checksums.txt'
+  algorithm: sha256
+
+snapshot:
+  name_template: "{{ .Version }}-next"
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+
+brews:
+  -
+    name: agent-ascii
+
+    tap:
+      owner: Vinniai
+      name: homebrew-agent-ascii
+
+    url_template: https://github.com/Vinniai/agent-ascii/releases/download/{{ .Tag }}/{{ .ArtifactName }}
+
+    commit_author:
+      name: Vinniai
+      email: 154685931+Vinniai@users.noreply.github.com
+
+    homepage: https://github.com/Vinniai/agent-ascii
+    description: Convert images into ascii art
+    license: Apache 2.0
+    skip_upload: true
+
+    test: |
+      system "#{bin}/agent-ascii --version"
+
+    install: |
+      bin.install "agent-ascii"
+
+nfpms:
+  -
+    package_name: agent-ascii
+    file_name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Arch }}"
+
+    homepage: https://github.com/Vinniai/agent-ascii
+    vendor: Vinniai
+    maintainer: Vinniai <154685931+Vinniai@users.noreply.github.com>
+    description: Convert images into ascii art
+    license: Apache 2.0
+
+    formats:
+      - deb
+      - rpm
+      
+    release: 1
+    section: graphics
+    priority: optional
+    bindir: /usr/bin
+    
+    rpm:
+      compression: lzma
