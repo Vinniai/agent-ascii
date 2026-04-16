@@ -1,6 +1,6 @@
 {
   "name": "agent-ascii",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Convert images and GIFs into terminal ASCII art with a native Go CLI exposed through npx.",
   "license": "Apache-2.0",
   "type": "module",
