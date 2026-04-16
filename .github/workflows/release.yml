@@ -110,7 +110,7 @@ jobs:
           chmod 600 ~/.npmrc
 
       - name: Publish platform package
-        run: npm publish "${{ matrix.package_dir }}" --provenance --access public
+        run: npm publish "${{ matrix.package_dir }}" --access public
 
   publish-root-package:
     needs: publish-platform-packages
@@ -138,4 +138,4 @@ jobs:
           chmod 600 ~/.npmrc
 
       - name: Publish root package
-        run: npm publish --provenance --access public
+        run: npm publish --access public
