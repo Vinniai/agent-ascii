@@ -14,17 +14,11 @@
     "README.md"
   ],
   "scripts": {
+    "postinstall": "node ./scripts/install-binary.mjs",
     "release:check": "node ./scripts/validate-release.mjs",
     "review:layout": "python3 ./scripts/review-layout.py",
     "skill:install": "bash ./scripts/install-skill.sh",
     "smoke": "bash ./scripts/ci-smoke.sh"
-  },
-  "optionalDependencies": {
-    "@vinniai/darwin-arm64": "1.0.0",
-    "@vinniai/darwin-x64": "1.0.0",
-    "@vinniai/linux-arm64": "1.0.0",
-    "@vinniai/linux-x64": "1.0.0",
-    "@vinniai/win32-x64": "1.0.0"
   },
   "engines": {
     "node": ">=18"

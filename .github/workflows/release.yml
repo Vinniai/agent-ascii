@@ -8,7 +8,6 @@ on:
 
 permissions:
   contents: write
-  id-token: write
 
 jobs:
   release-assets:
@@ -35,6 +34,8 @@ jobs:
 
       - name: Install npm dependencies
         run: npm ci
+        env:
+          AGENT_ASCII_SKIP_DOWNLOAD: "1"
 
       - name: Validate release metadata
         run: npm run release:check
@@ -47,91 +48,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  publish-platform-packages:
-    needs: release-assets
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - package_dir: packages/npm/darwin-arm64
-            binary_name: agent-ascii
-            goos: darwin
-            goarch: arm64
-          - package_dir: packages/npm/darwin-x64
-            binary_name: agent-ascii
-            goos: darwin
-            goarch: amd64
-          - package_dir: packages/npm/linux-arm64
-            binary_name: agent-ascii
-            goos: linux
-            goarch: arm64
-          - package_dir: packages/npm/linux-x64
-            binary_name: agent-ascii
-            goos: linux
-            goarch: amd64
-          - package_dir: packages/npm/win32-x64
-            binary_name: agent-ascii.exe
-            goos: windows
-            goarch: amd64
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - uses: actions/setup-go@v5
-        with:
-          go-version-file: go.mod
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          registry-url: https://registry.npmjs.org
-
-      - name: Install npm dependencies
-        run: npm ci
-
-      - name: Validate release metadata
-        run: npm run release:check
-
-      - name: Build platform binary
+      - name: Publish npm package
         run: |
-          mkdir -p "${{ matrix.package_dir }}/bin"
-          GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }} CGO_ENABLED=0 \
-            go build \
-            -ldflags "-s -w -X github.com/Vinniai/agent-ascii/internal/version.Version=${GITHUB_REF_NAME#v}" \
-            -o "${{ matrix.package_dir }}/bin/${{ matrix.binary_name }}" \
-            .
-
-      - name: Setup npm authentication
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> "$NPM_CONFIG_USERCONFIG"
-
-      - name: Publish platform package
-        run: npm publish "${{ matrix.package_dir }}" --access public
-
-  publish-root-package:
-    needs: release-assets
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          registry-url: https://registry.npmjs.org
-
-      - name: Install npm dependencies
-        run: npm ci
-
-      - name: Validate release metadata
-        run: npm run release:check
-
-      - name: Setup npm authentication
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> "$NPM_CONFIG_USERCONFIG"
-
-      - name: Publish root package
-        run: npm publish --access public
+          # Write token directly into whichever .npmrc npm is configured to use
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> "${NPM_CONFIG_USERCONFIG:-$HOME/.npmrc}"
+          npm publish --access public

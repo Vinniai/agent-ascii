@@ -2,20 +2,14 @@
 
 import { spawn } from "node:child_process";
 import { accessSync, constants } from "node:fs";
-import { createRequire } from "node:module";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import {
-  currentPlatformPackage,
-  localFallbackBinaryPath
-} from "../scripts/platform.mjs";
-
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const packageRoot = path.resolve(scriptDir, "..");
-const require = createRequire(import.meta.url);
-const binaryPath =
-  process.env.AGENT_ASCII_BINARY_PATH || resolveInstalledBinaryPath();
+const binaryName = process.platform === "win32" ? "agent-ascii.exe" : "agent-ascii";
+const binaryPath = process.env.AGENT_ASCII_BINARY_PATH
+  || path.join(packageRoot, "vendor", binaryName);
 
 try {
   accessSync(binaryPath, constants.X_OK);
@@ -23,8 +17,9 @@ try {
   console.error(
     [
       "agent-ascii native binary is missing.",
-      "This package expects an OS-specific optional dependency with a bundled binary.",
-      "If you are running from a git checkout, build locally with `./scripts/test-local.sh` or set AGENT_ASCII_BINARY_PATH.",
+      "The binary is normally downloaded during npm install.",
+      "Re-run: npm install",
+      "Or set AGENT_ASCII_BINARY_PATH to point to a pre-built binary.",
       `Expected binary at: ${binaryPath}`
     ].join("\n")
   );
@@ -40,7 +35,6 @@ child.on("exit", (code, signal) => {
     process.kill(process.pid, signal);
     return;
   }
-
   process.exit(code ?? 0);
 });
 
@@ -48,29 +42,3 @@ child.on("error", (error) => {
   console.error(`Failed to launch agent-ascii: ${error.message}`);
   process.exit(1);
 });
-
-function resolveInstalledBinaryPath() {
-  try {
-    const platformPackage = currentPlatformPackage();
-    const packageJsonPath = require.resolve(
-      `${platformPackage.packageName}/package.json`
-    );
-
-    return path.join(
-      path.dirname(packageJsonPath),
-      platformPackage.binaryRelativePath
-    );
-  } catch (error) {
-    const fallbackPath = localFallbackBinaryPath(packageRoot);
-
-    try {
-      accessSync(fallbackPath, constants.X_OK);
-      return fallbackPath;
-    } catch {
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
-      return fallbackPath;
-    }
-  }
-}
