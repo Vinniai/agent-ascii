@@ -4,52 +4,47 @@
 [![license](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/Vinniai/agent-ascii/blob/master/LICENSE.txt)
 [![language](https://img.shields.io/badge/Language-Go-blue)](https://golang.org/)
 ![release-downloads](https://img.shields.io/github/downloads/Vinniai/agent-ascii/total?color=1d872d&label=Release%20Downloads)
-[![agent-ascii-snap](https://snapcraft.io/agent-ascii/badge.svg)](https://snapcraft.io/agent-ascii)
 
-agent-ascii is a command-line tool that converts images into ascii art and prints them out onto the console. Available on Windows, Linux and macOS.
+Convert images and GIFs into ASCII art in your terminal. Available on Windows, Linux and macOS — no Go required via npx.
 
-Now supports braille art!
+Supports both ASCII character maps and braille patterns. Optimized for rendering UI screenshots, web pages, and photos.
 
-Input formats currently supported:
-* JPEG/JPG
-* PNG
-* BMP
-* WEBP
-* TIFF/TIF
-* GIF
+> Inspired by [ascii-image-converter](https://github.com/TheZoraiz/ascii-image-converter) by Zoraiz Hassan.
 
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/master/example_gifs/all.gif">
-</p>
+**Supported input formats:** JPEG · PNG · BMP · WEBP · TIFF · GIF
+
+---
 
 ## Table of Contents
 
--  [Installation](#installation)
-	*  [npx](#npx)
-	*  [npm Global Install](#npm-global-install)
-	*  [GitHub Action](#github-action)
-	*  [Agent Skill](#agent-skill)
-	*  [Go](#go)
-	*  [Release Binaries](#release-binaries)
--  [CLI Usage](#cli-usage)
-	*  [Flags](#flags)
--  [Automation](#automation)
--  [Library Usage](#library-usage)
--  [Contributing](#contributing)
--  [Packages Used](#packages-used)
--  [License](#license)
+- [Installation](#installation)
+  - [npx](#npx)
+  - [npm Global Install](#npm-global-install)
+  - [GitHub Action](#github-action)
+  - [Agent Skill](#agent-skill)
+  - [Go](#go)
+  - [Release Binaries](#release-binaries)
+- [Examples](#examples)
+- [CLI Usage](#cli-usage)
+  - [Flags](#flags)
+- [Automation](#automation)
+- [Library Usage](#library-usage)
+- [Packages Used](#packages-used)
+- [License](#license)
+
+---
 
 ## Installation
 
 ### npx
 
-Once the package is published to npm, the default entrypoint is:
+Run directly without installing:
 
 ```
 npx agent-ascii ./image.png
 ```
 
-The npm package installs a prebuilt OS-specific binary package for the current platform. End users do not need Go installed.
+The package downloads a prebuilt OS-specific binary on first run. No Go installation required.
 
 ### npm Global Install
 
@@ -65,10 +60,8 @@ agent-ascii ./image.png
 
 ### GitHub Action
 
-Use the repo as a reusable GitHub Action:
-
 ```yaml
-- uses: Vinniai/agent-ascii@v1.14.0
+- uses: Vinniai/agent-ascii@v1
   with:
     paths: |
       examples/screenshots/apple-mobile.png
@@ -77,17 +70,15 @@ Use the repo as a reusable GitHub Action:
     output-dir: .agent-ascii-out
 ```
 
-By default the action saves `.txt` artifacts and keeps logs quiet with `--only-save`.
+By default the action saves `.txt` artifacts with `--only-save`.
 
 ### Agent Skill
-
-Install the public skill for supported agent setups:
 
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/Vinniai/agent-ascii/main/scripts/install-skill.sh)
 ```
 
-Manual target override:
+Manual install target:
 
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/Vinniai/agent-ascii/main/scripts/install-skill.sh) --dir "$HOME/.codex/skills"
@@ -98,428 +89,222 @@ bash <(curl -fsSL https://raw.githubusercontent.com/Vinniai/agent-ascii/main/scr
 ```
 go install github.com/Vinniai/agent-ascii@latest
 ```
-<hr>
 
 ### Release Binaries
 
-Download the archive for your distribution's architecture [here](https://github.com/Vinniai/agent-ascii/releases/latest), extract it, and open the extracted directory.
+Download for your platform from the [releases page](https://github.com/Vinniai/agent-ascii/releases/latest), extract, and copy to your `PATH`:
 
-On macOS and Linux:
-
-```
+```bash
+# macOS / Linux
 sudo cp agent-ascii /usr/local/bin/
+
+# Windows — place agent-ascii.exe in a directory on your PATH
 ```
 
-On Windows, place `agent-ascii.exe` in a directory on your `PATH`.
+---
 
-> **Release note:** `npx agent-ascii` will start working publicly after the first GitHub release asset set and the `agent-ascii` npm package are published with the same version number.
+## Examples
 
-<br>
+All examples use real screenshots from `examples/screenshots/`. Decrease terminal font size or increase width for best quality.
 
-## Automation
+### Basic ASCII (`--width 80`)
 
-This repo ships three automation surfaces:
+```
+agent-ascii examples/screenshots/google-desktop.png --width 80
+```
 
-- `action.yml`: reusable GitHub Action for CI and PR workflows
-- `skills/agent-ascii/SKILL.md`: public agent skill definition
-- `AGENTS.md`: contributor and in-repo agent rules
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/01-basic.png" width="700">
+</p>
 
-Use the checked-in screenshots in `examples/screenshots/` for repeatable smoke tests in CI.
+### Complex character range (`--complex`)
+
+Uses a wider ASCII character set for more tonal detail.
+
+```
+agent-ascii examples/screenshots/google-desktop.png --width 80 --complex
+```
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/02-complex.png" width="700">
+</p>
+
+### Braille (`--braille`)
+
+Uses Unicode braille patterns — terminal must support UTF-8.
+
+```
+agent-ascii examples/screenshots/google-desktop.png --width 80 --braille
+```
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/03-braille.png" width="700">
+</p>
+
+### Braille + dither (`--braille --dither`)
+
+Dithering spreads pixel error across neighbors, giving sharper edges in braille mode.
+
+```
+agent-ascii examples/screenshots/google-desktop.png --width 80 --braille --dither
+```
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/04-braille-dither.png" width="700">
+</p>
+
+### Layout mode (`--layout`)
+
+Optimized for inspecting UI screenshots and web pages — auto-selects braille with adaptive contrast and dithering.
+
+```
+agent-ascii examples/screenshots/google-desktop.png --width 80 --layout
+```
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/05-layout.png" width="700">
+</p>
+
+### Negative (`--negative`)
+
+Inverts the character density, useful for light-background images.
+
+```
+agent-ascii examples/screenshots/apple-mobile.png --width 60 --negative
+```
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/06-negative.png" width="500">
+</p>
+
+### Custom character map (`--map`)
+
+Define your own character gradient from darkest to lightest.
+
+```
+agent-ascii examples/screenshots/apple-mobile.png --width 60 --map " .-=+#@"
+```
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/07-complex-map.png" width="500">
+</p>
+
+### Braille + dither on mobile (`--braille --dither`)
+
+```
+agent-ascii examples/screenshots/apple-mobile.png --width 60 --braille --dither
+```
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/08-braille-dither-mobile.png" width="500">
+</p>
+
+---
 
 ## CLI Usage
 
-> **Note:** Decrease font size or increase terminal width (like zooming out) for maximum quality ascii art
-
-The basic usage for converting an image into ascii art is as follows. You can also supply multiple image paths and urls as well as a GIF.
+> **Tip:** Decrease font size or zoom out your terminal for maximum quality.
 
 ```
-agent-ascii [image paths/urls]
-```
-Example:
-```
-agent-ascii myImage.jpeg
+agent-ascii [image paths/urls or piped stdin] [flags]
 ```
 
-> **Note:** Piped binary input is also supported
-> ```
-> cat myImage.png | agent-ascii -
-> ```
+Piped input is also supported:
 
+```bash
+cat myImage.png | agent-ascii -
+```
 
 ### Flags
 
-#### --color OR -C
-
-> **Note:** Your terminal must support 24-bit or 8-bit colors for appropriate results. If 24-bit colors aren't supported, 8-bit color escape codes will be used
-
-Display ascii art with the colors from original image.
-
-```
-agent-ascii [image paths/urls] -C
-# Or
-agent-ascii [image paths/urls] --color
-```
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/master/example_gifs/color.gif">
-</p>
-
-#### --braille OR -b
-
-> **Note:** Braille pattern display heavily depends on which terminal or font you're using. In windows, try changing the font from command prompt properties if braille characters don't display
-
-Use braille characters instead of ascii. For this flag, your terminal must support braille patters (UTF-8) properly. Otherwise, you may encounter problems with colored or even uncolored braille art.
-```
-agent-ascii [image paths/urls] -b
-# Or
-agent-ascii [image paths/urls] --braille
-```
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/master/example_gifs/braille.gif">
-</p>
-
-#### --threshold
-
-Set threshold value to compare for braille art when converting each pixel into a dot. Value must be between 0 and 255.
-
-Example:
-```
-agent-ascii [image paths/urls] -b --threshold 170
-```
-
-#### --dither
-
-Apply dithering on image to make braille art more visible. Since braille dots can only be on or off, dithering images makes them more visible in braille art.
-
-Example:
-```
-agent-ascii [image paths/urls] -b --dither
-```
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/master/example_gifs/dither.gif">
-</p>
-
-#### --color-bg
-
-If any of the coloring flags is passed, this flag will transfer its color to each character's background. instead of foreground. However, this option isn't available for `--save-img` and `--save-gif`
-```
-agent-ascii [image paths/urls] -C --color-bg
-```
-
-#### --dimensions OR -d
-
-> **Note:** Don't immediately append another flag with -d
-
-Set the width and height for ascii art in CHARACTER lengths.
-```
-agent-ascii [image paths/urls] -d <width>,<height>
-# Or
-agent-ascii [image paths/urls] --dimensions <width>,<height>
-```
-Example:
-```
-agent-ascii [image paths/urls] -d 60,30
-```
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/master/example_gifs/dimensions.gif">
-</p>
-
-#### --width OR -W
-
-> **Note:** Don't immediately append another flag with -W
-
-Set width of ascii art. Height is calculated according to aspect ratio.
-```
-agent-ascii [image paths/urls] -W <width>
-# Or
-agent-ascii [image paths/urls] --width <width>
-```
-Example:
-```
-agent-ascii [image paths/urls] -W 60
-```
-
-#### --height OR -H
-
-> **Note:** Don't immediately append another flag with -H
-
-Set height of ascii art. Width is calculated according to aspect ratio.
-```
-agent-ascii [image paths/urls] -H <height>
-# Or
-agent-ascii [image paths/urls] --height <height>
-```
-Example:
-```
-agent-ascii [image paths/urls] -H 60
-```
-
-#### --map OR -m
-
-> **Note:** Don't immediately append another flag with -m
-
-Pass a string of your own ascii characters to map against. Passed characters must start from darkest character and end with lightest. There is no limit to number of characters.
-
-Empty spaces can be passed if string is passed inside quotation marks. You can use both single or double quote for quotation marks. For repeating quotation mark inside string, append it with \ (such as  \\").
-
-```
-agent-ascii [image paths/urls] -m "<string-of-characters>"
-# Or
-agent-ascii [image paths/urls] --map "<string-of-characters>"
-```
-Following example contains 7 depths of lighting.
-```
-agent-ascii [image paths/urls] -m " .-=+#@"
-```
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/master/example_gifs/map.gif">
-</p>
-
-#### --grayscale OR -g
-
-Display ascii art in grayscale colors. This is the same as --color flag, except each character will be encoded with a grayscale RGB value.
-
-```
-agent-ascii [image paths/urls] -g
-# Or
-agent-ascii [image paths/urls] --grayscale
-```
-
-#### --negative OR -n
-
-Display ascii art in negative colors. Works with both uncolored and colored text from --color flag.
-
-```
-agent-ascii [image paths/urls] -n
-# Or
-agent-ascii [image paths/urls] --negative
-```
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/master/example_gifs/negative.gif">
-</p>
-
-#### --complex OR -c
-
-Print the image with a wider array of ascii characters for more detailed lighting density. Sometimes improves accuracy.
-```
-agent-ascii [image paths/urls] -c
-# Or
-agent-ascii [image paths/urls] --complex
-```
-
-#### --full OR -f
-
-Print ascii art that fits the terminal width while maintaining aspect ratio.
-```
-agent-ascii [image paths/urls] -f
-# Or
-agent-ascii [image paths/urls] --full
-```
-
-#### --flipX OR -x
-
-Flip the ascii art horizontally on the terminal.
-
-```
-agent-ascii [image paths/urls] --flipX
-# Or
-agent-ascii [image paths/urls] -x
-```
-
-#### --flipY OR -y
-Flip the ascii art vertically on the terminal.
-
-```
-agent-ascii [image paths/urls] --flipY
-# Or
-agent-ascii [image paths/urls] -y
-```
-
-
-
-#### --save-img OR -s
-
-> **Note:** Don't immediately append another flag with -s
-
-Saves the ascii as a PNG image with the name `<image-name>-ascii-art.png` in the directory path passed to the flag. Can work with both --color and --negative flag.
-
-Example for current directory:
-
-```
-agent-ascii [image paths/urls] --save-img .
-# Or
-agent-ascii [image paths/urls] -s .
-```
-
-#### --save-txt
-
-Similar to --save-img but it creates a TXT file with the name `<image-name>-ascii-art.txt` in the directory path passed to the flag. Only saves uncolored text.
-
-Example for current directory:
-
-```
-agent-ascii [image paths/urls] --save-txt .
-```
-
-#### --save-gif
-
-> **Note:** This is an experimental feature and may not result in the finest quality GIFs, because all GIFs still aren't supported by agent-ascii.
-
-Saves the passed GIF as an ascii art GIF with the name `<image-name>-ascii-art.gif` in the directory path passed to the flag.
-
-<p align="center">
-  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/master/example_gifs/save.gif">
-</p>
-
-#### --save-bg
-
-> **Note:** This flag will be ignored if `--save-img` or `--save-gif` flags are not set
-
-This flag takes an RGBA value that sets the background color in saved png and gif files. The fourth value (alpha value) is the measure of background opacity ranging between 0 and 100.
-
-```
-agent-ascii [image paths/urls] -s . --save-bg 255,255,255,100 # For white background
-```
-
-#### --font
-
-> **Note:** This flag will be ignored if `--save-img` or `--save-gif` flags are not set
-
-This flag takes path to a font .ttf file that will be used to set font in saved png or gif files.
-
-```
-agent-ascii [image paths/urls] -s . --font /path/to/font-file.ttf
-```
-
-#### --font-color
-
-This flag takes an RGB value that sets the font color in saved png and gif files as well as displayed ascii art in terminal.
-
-```
-agent-ascii [image paths/urls] -s . --font-color 0,0,0 # For black font color
-```
-
-#### --only-save
-
-Don't print ascii art on the terminal if some saving flag is passed.
-
-```
-agent-ascii [image paths/urls] -s . --only-save
-```
-
-#### --formats
-
-Display supported input formats.
-
-```
-agent-ascii --formats
-```
-
-<br>
+| Flag | Short | Description |
+|------|-------|-------------|
+| `--color` | `-C` | Display in original image colors (requires 24-bit/8-bit terminal) |
+| `--color-bg` | | Apply color to character background instead of foreground |
+| `--braille` | `-b` | Use Unicode braille characters instead of ASCII |
+| `--dither` | | Apply dithering for braille conversion |
+| `--threshold N` | | Braille on/off threshold (0–255, default: 128) |
+| `--layout` | | Optimize for UI/webpage screenshot inspection |
+| `--complex` | `-c` | Extended ASCII character range for more detail |
+| `--map "chars"` | `-m` | Custom character gradient, darkest to lightest |
+| `--grayscale` | `-g` | Grayscale output |
+| `--negative` | `-n` | Invert colors |
+| `--width N` | `-W` | Output width in characters (maintains aspect ratio) |
+| `--height N` | `-H` | Output height in characters (maintains aspect ratio) |
+| `--dimensions W,H` | `-d` | Explicit width and height in characters |
+| `--full` | `-f` | Fill terminal width |
+| `--flipX` | `-x` | Flip horizontally |
+| `--flipY` | `-y` | Flip vertically |
+| `--save-img path` | `-s` | Save as PNG to path |
+| `--save-txt path` | | Save as text file |
+| `--save-gif path` | | Save GIF as ASCII art GIF |
+| `--save-bg R,G,B,A` | | Background color for saved images (RGBA) |
+| `--font path` | | Font .ttf file for saved images |
+| `--font-color R,G,B` | | Font color for output and saved images |
+| `--only-save` | | Skip terminal output when saving |
+| `--formats` | | Show supported input formats |
+
+---
+
+## Automation
+
+Three automation surfaces ship with this repo:
+
+| Surface | Path | Purpose |
+|---------|------|---------|
+| GitHub Action | `action.yml` | Reusable action for CI and PR workflows |
+| Agent Skill | `skills/agent-ascii/SKILL.md` | Public skill for AI agent setups |
+| Agent Rules | `AGENTS.md` | Contributor and in-repo agent guidelines |
+
+Use screenshots in `examples/screenshots/` for repeatable smoke tests in CI.
+
+---
 
 ## Library Usage
 
-> **Note:** The library may throw errors during Go tests due to some unresolved bugs with the [consolesize-go](https://github.com/nathan-fiscaletti/consolesize-go) package (Only during tests, not main program execution).
-
-First, install the library with:
 ```
 go get -u github.com/Vinniai/agent-ascii/aic_package
 ```
 
-For an image:
-
 ```go
 package main
 
 import (
 	"fmt"
-
 	"github.com/Vinniai/agent-ascii/aic_package"
 )
 
 func main() {
-	// If file is in current directory. This can also be a URL to an image or gif.
-	filePath := "myImage.jpeg"
-
 	flags := aic_package.DefaultFlags()
+	flags.Width = 80
+	flags.Braille = true
+	flags.Dither = true
 
-	// This part is optional.
-	// You can directly pass default flags variable to aic_package.Convert() if you wish.
-	// There are more flags, but these are the ones shown for demonstration
-	flags.Dimensions = []int{50, 25}
-	flags.Colored = true
-	flags.SaveTxtPath = "."
-	flags.SaveImagePath = "."
-	flags.CustomMap = " .-=+#@"
-	flags.FontFilePath = "./RobotoMono-Regular.ttf" // If file is in current directory
-	flags.SaveBackgroundColor = [4]int{50, 50, 50, 100}
-
-	// Note: For environments where a terminal isn't available (such as web servers), you MUST
-	// specify atleast one of flags.Width, flags.Height or flags.Dimensions
-
-	// Conversion for an image
-	asciiArt, err := aic_package.Convert(filePath, flags)
+	asciiArt, err := aic_package.Convert("myImage.png", flags)
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
-
-	fmt.Printf("%v\n", asciiArt)
+	fmt.Print(asciiArt)
 }
 ```
-<br>
 
-> **Note:** GIF conversion is not advised as the function may run infinitely, depending on the GIF. More work needs to be done on this to make it more library-compatible.
+> **Note:** For headless environments (web servers, CI), set at least one of `flags.Width`, `flags.Height`, or `flags.Dimensions` — terminal size detection won't be available.
 
-For a GIF:
-
-```go
-package main
-
-import (
-	"fmt"
-
-	"github.com/Vinniai/agent-ascii/aic_package"
-)
-
-func main() {
-	filePath = "myGif.gif"
-
-	flags := aic_package.DefaultFlags()
-
-	_, err := aic_package.Convert(filePath, flags)
-	if err != nil {
-		fmt.Println(err)
-	}
-}
-
-```
-
-<br>
-
-## Contributing
-
-You can fork the project and implement any changes you want for a pull request. However, for major changes, please open an issue first to discuss what you would like to implement.
+---
 
 ## Packages Used
 
-[github.com/spf13/cobra](https://github.com/spf13/cobra)
+- [github.com/spf13/cobra](https://github.com/spf13/cobra)
+- [github.com/fogleman/gg](https://github.com/fogleman/gg)
+- [github.com/mitchellh/go-homedir](https://github.com/mitchellh/go-homedir)
+- [github.com/nathan-fiscaletti/consolesize-go](https://github.com/nathan-fiscaletti/consolesize-go)
+- [github.com/disintegration/imaging](https://github.com/disintegration/imaging)
+- [github.com/gookit/color](https://github.com/gookit/color)
+- [github.com/makeworld-the-better-one/dither](https://github.com/makeworld-the-better-one/dither)
 
-[github.com/fogleman/gg](https://github.com/fogleman/gg)
-
-[github.com/mitchellh/go-homedir](https://github.com/mitchellh/go-homedir)
-
-[github.com/nathan-fiscaletti/consolesize-go](https://github.com/nathan-fiscaletti/consolesize-go)
-
-[github.com/disintegration/imaging](https://github.com/disintegration/imaging)
-
-[github.com/gookit/color](https://github.com/gookit/color)
-
-[github.com/makeworld-the-better-one/dither](https://github.com/makeworld-the-better-one/dither)
+---
 
 ## License
 
-[Apache-2.0](https://github.com/Vinniai/agent-ascii/blob/master/LICENSE.txt)
+[Apache-2.0](https://github.com/Vinniai/agent-ascii/blob/master/LICENSE.txt) © 2021 Zoraiz Hassan
