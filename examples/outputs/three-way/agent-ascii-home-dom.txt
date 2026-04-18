@@ -1,0 +1,477 @@
+- generic
+  - heading "agent-ascii" [level=1, ref=e1]
+  - Canvas
+  - generic
+    - sectionheader
+      - StaticText "AGENT-ASCII"
+      - StaticText "V1.0.2 · APACHE-2.0"
+      - link "GITHUB ↗" [ref=e28]
+    - StaticText "IMAGE → ASCII, FOR AGENTS"
+    - heading "agent-ascii" [level=2, ref=e10]
+      - StaticText "agent-ascii"
+    - paragraph
+      - StaticText "Convert images, screenshots, and GIFs into low-byte ASCII and braille renders. Framed layouts, visual diffs, and aClaude Code skillthat keeps agent context cheap."
+    - StaticText "QUICKSTART"
+    - code
+      - StaticText "$ npx agent-ascii ./shot.png --layout"
+    - link "READ THE MANUAL ↗" [ref=e11]
+- StaticText "01"
+- StaticText "INSTALL"
+- heading "Up and running in one line." [level=3, ref=e2]
+- paragraph
+  - StaticText "Prebuilt binaries for macOS, Linux, and Windows ship through npm. No Go toolchain needed unless you're hacking on the source."
+- StaticText "NPX · ZERO-INSTALL"
+- generic
+  - StaticText "$ "
+  - code
+    - StaticText "npx agent-ascii ./screenshot.png --layout"
+- StaticText "NPM · GLOBAL"
+- generic
+  - StaticText "$ "
+  - code
+    - StaticText "npm install --global agent-ascii"
+- StaticText "GO · FROM SOURCE"
+- generic
+  - StaticText "$ "
+  - code
+    - StaticText "go install github.com/Vinniai/agent-ascii@latest"
+- StaticText "CLAUDE CODE · SKILL"
+- generic
+  - StaticText "$ "
+  - code
+    - StaticText "npx agent-ascii@latest skill:install"
+- StaticText "01"
+- StaticText "FEATURED · "
+- StaticText "LAYOUT · WATCH CLOSEUP"
+- heading "Layout mode on a product hero" [level=3, ref=e3]
+- paragraph
+  - StaticText "Close crop of the Apple Watch hero card, rendered in --layout mode. Braille + adaptive contrast + dithering keeps the dial face, chart ring, and digital crown readable at width 100."
+- generic
+  - StaticText "$ "
+  - code
+    - StaticText "agent-ascii apple-watch.png --width 100 --layout"
+- slider "Comparison slider" [ref=e4]: 50
+  - StaticText "SOURCE SCREENSHOT"
+  - StaticText "AGENT-ASCII RENDER"
+- StaticText "02"
+- StaticText "CLOSEUPS"
+- heading "Closer crops, richer renders." [level=3, ref=e5]
+- paragraph
+  - StaticText "Every block pairs a tightly cropped source with its agent-ascii render. Drag the handle to swipe between them — this is exactly what the model sees when the screenshot is handed over as context."
+- article
+  - StaticText "02"
+  - StaticText "BRAILLE · WATCH"
+  - heading "Plain braille, same crop" [level=3, ref=e12]
+  - paragraph
+    - StaticText "The same Apple Watch closeup rendered with --braille only. Denser ink, no adaptive contrast — shows what the raw 2×4 subpixel packing produces before layout tuning kicks in."
+  - generic
+    - StaticText "$ "
+    - code
+      - StaticText "agent-ascii apple-watch.png --width 100 --braille"
+  - slider "Comparison slider" [ref=e13]: 50
+    - StaticText "SOURCE"
+    - StaticText "ASCII"
+- article
+  - StaticText "03"
+  - StaticText "LAYOUT · IPHONE LINEUP"
+  - heading "iPhone stack · layout mode" [level=3, ref=e14]
+  - paragraph
+    - StaticText "Cropped to the iPhone lineup shot — three phones, Apple logos, buttons, headings. Layout mode keeps the CTA pills legible at width 60."
+  - generic
+    - StaticText "$ "
+    - code
+      - StaticText "agent-ascii apple-iphone.png --width 60 --layout"
+  - slider "Comparison slider" [ref=e15]: 50
+    - StaticText "SOURCE"
+    - StaticText "ASCII"
+- article
+  - StaticText "04"
+  - StaticText "BRAILLE · IPHONE LINEUP"
+  - heading "iPhone stack · raw braille" [level=3, ref=e16]
+  - paragraph
+    - StaticText "Same iPhone crop with --braille. You can still pick out the three handsets and the button row — useful when you only need silhouette structure."
+  - generic
+    - StaticText "$ "
+    - code
+      - StaticText "agent-ascii apple-iphone.png --width 60 --braille"
+  - slider "Comparison slider" [ref=e17]: 50
+    - StaticText "SOURCE"
+    - StaticText "ASCII"
+- article
+  - StaticText "05"
+  - StaticText "LAYOUT · SIGNUP FORM"
+  - heading "X signup form · layout mode" [level=3, ref=e18]
+  - paragraph
+    - StaticText "The Happening now signup, cropped to the form. Layout mode holds the wordmark, heading, and the Google/Apple/Create account button stack — exactly the UI primitives an agent needs to reason about."
+  - generic
+    - StaticText "$ "
+    - code
+      - StaticText "agent-ascii x-signup.png --width 60 --layout"
+  - slider "Comparison slider" [ref=e19]: 50
+    - StaticText "SOURCE"
+    - StaticText "ASCII"
+- article
+  - StaticText "06"
+  - StaticText "BRAILLE · SIGNUP FORM"
+  - heading "X signup form · raw braille" [level=3, ref=e20]
+  - paragraph
+    - StaticText "Same crop with --braille. Great contrast case: dark CTA pill reads crisp, light pills lose their interior labels. This is why --layout exists."
+  - generic
+    - StaticText "$ "
+    - code
+      - StaticText "agent-ascii x-signup.png --width 60 --braille"
+  - slider "Comparison slider" [ref=e21]: 50
+    - StaticText "SOURCE"
+    - StaticText "ASCII"
+- article
+  - StaticText "07"
+  - StaticText "LAYOUT · WEBPAGE A"
+  - heading "Landing page baseline" [level=3, ref=e22]
+  - paragraph
+    - StaticText "Synthetic landing page (nav, hero, three feature cards, footer) at width 80 in --layout mode. This becomes the baseline for the drift diff below."
+  - generic
+    - StaticText "$ "
+    - code
+      - StaticText "agent-ascii landing.png --width 80 --layout"
+  - slider "Comparison slider" [ref=e23]: 50
+    - StaticText "SOURCE"
+    - StaticText "ASCII"
+- StaticText "03"
+- StaticText "DIFF ATLAS"
+- heading "Red for gone, green for new." [level=3, ref=e6]
+- paragraph
+  - StaticText "Render two screenshots with the same flags, compare cell-by-cell, colour each changed cell by direction:red where ink disappeared,green where it arrived,amber where it shifted in place. Four pairs, same width, same preset."
+- generic
+  - StaticText "$ "
+  - code
+    - StaticText "agent-ascii diff before.png after.png --width 60 --layout"
+- StaticText "ADDED"
+- StaticText "REMOVED"
+- StaticText "MODIFIED"
+- article
+  - StaticText "01"
+  - StaticText "WEBPAGE · NATURAL PAIR"
+  - heading "Landing page · hero repositioned" [level=4, ref=e24]
+  - paragraph
+    - StaticText "The two real landing-page captures from our test set. Dithering pushes the hero band into a different row, which shows up as green (added rows) below and red (removed rows) above."
+  - DescriptionList
+    - term "grid"
+    - definition
+      - StaticText "36 × 60"
+    - term "added"
+    - definition
+      - StaticText "+427"
+    - term "removed"
+    - definition
+      - StaticText "−313"
+    - term "modified"
+    - definition
+      - StaticText "~309"
+    - term "drift"
+    - definition
+      - StaticText "48.6%"
+  - StaticText "TOP HOTSPOTS"
+  - StaticText "TC"
+  - StaticText " · "
+  - StaticText "207"
+  - StaticText "BL"
+  - StaticText " · "
+  - StaticText "127"
+  - StaticText "MC"
+  - StaticText " · "
+  - StaticText "126"
+  - StaticText "BC"
+  - StaticText " · "
+  - StaticText "120"
+  - figure
+    - Figcaption
+      - StaticText "BEFORE"
+    - image "01 before"
+  - figure
+    - Figcaption
+      - StaticText "AFTER"
+    - image "01 after"
+  - figure
+    - Figcaption
+      - StaticText "HEATMAP"
+    - image "01 heatmap"
+- article
+  - StaticText "02"
+  - StaticText "X-SIGNUP · ADDED BANNER"
+  - heading "Signup form · added banner, dropped CTA" [level=4, ref=e25]
+  - paragraph
+    - StaticText "A realistic state change — a new promo banner appears top-of-page, the CTA row is blanked. Green clusters at the banner, red across the bottom CTA band."
+  - DescriptionList
+    - term "grid"
+    - definition
+      - StaticText "40 × 60"
+    - term "added"
+    - definition
+      - StaticText "+343"
+    - term "removed"
+    - definition
+      - StaticText "−90"
+    - term "modified"
+    - definition
+      - StaticText "~662"
+    - term "drift"
+    - definition
+      - StaticText "45.6%"
+  - StaticText "TOP HOTSPOTS"
+  - StaticText "BC"
+  - StaticText " · "
+  - StaticText "203"
+  - StaticText "BL"
+  - StaticText " · "
+  - StaticText "147"
+  - StaticText "ML"
+  - StaticText " · "
+  - StaticText "129"
+  - StaticText "BR"
+  - StaticText " · "
+  - StaticText "117"
+  - figure
+    - Figcaption
+      - StaticText "BEFORE"
+    - image "02 before"
+  - figure
+    - Figcaption
+      - StaticText "AFTER"
+    - image "02 after"
+  - figure
+    - Figcaption
+      - StaticText "HEATMAP"
+    - image "02 heatmap"
+- article
+  - StaticText "03"
+  - StaticText "IPHONE · BANNER + MASKED STACK"
+  - heading "iPhone lineup · new banner, masked lower stack" [level=4, ref=e26]
+  - paragraph
+    - StaticText "The same recipe on a photo-heavy crop. Even here the heatmap isolates where ink disappeared (red, bottom half) from where new ink arrived (green, banner row)."
+  - DescriptionList
+    - term "grid"
+    - definition
+      - StaticText "46 × 60"
+    - term "added"
+    - definition
+      - StaticText "+162"
+    - term "removed"
+    - definition
+      - StaticText "−338"
+    - term "modified"
+    - definition
+      - StaticText "~617"
+    - term "drift"
+    - definition
+      - StaticText "40.5%"
+  - StaticText "TOP HOTSPOTS"
+  - StaticText "BC"
+  - StaticText " · "
+  - StaticText "208"
+  - StaticText "BL"
+  - StaticText " · "
+  - StaticText "176"
+  - StaticText "TC"
+  - StaticText " · "
+  - StaticText "145"
+  - StaticText "TL"
+  - StaticText " · "
+  - StaticText "142"
+  - figure
+    - Figcaption
+      - StaticText "BEFORE"
+    - image "03 before"
+  - figure
+    - Figcaption
+      - StaticText "AFTER"
+    - image "03 after"
+  - figure
+    - Figcaption
+      - StaticText "HEATMAP"
+    - image "03 heatmap"
+- article
+  - StaticText "04"
+  - StaticText "WATCH · SUBTLE CHANGE"
+  - heading "Watch hero · narrow banner only" [level=4, ref=e27]
+  - paragraph
+    - StaticText "Smaller change, tighter grid. The diff keeps amber (modified) dominant — the ink density shifted but the silhouette mostly held. Good sanity check for false-positive noise."
+  - DescriptionList
+    - term "grid"
+    - definition
+      - StaticText "20 × 60"
+    - term "added"
+    - definition
+      - StaticText "+63"
+    - term "removed"
+    - definition
+      - StaticText "−49"
+    - term "modified"
+    - definition
+      - StaticText "~456"
+    - term "drift"
+    - definition
+      - StaticText "47.3%"
+  - StaticText "TOP HOTSPOTS"
+  - StaticText "MC"
+  - StaticText " · "
+  - StaticText "113"
+  - StaticText "TC"
+  - StaticText " · "
+  - StaticText "83"
+  - StaticText "TR"
+  - StaticText " · "
+  - StaticText "61"
+  - StaticText "TL"
+  - StaticText " · "
+  - StaticText "60"
+  - figure
+    - Figcaption
+      - StaticText "BEFORE"
+    - image "04 before"
+  - figure
+    - Figcaption
+      - StaticText "AFTER"
+    - image "04 after"
+  - figure
+    - Figcaption
+      - StaticText "HEATMAP"
+    - image "04 heatmap"
+- StaticText "04"
+- StaticText "ONE-IMAGE DIFF"
+- heading "One image. Read the whole diff." [level=3, ref=e7]
+- paragraph
+  - StaticText "Instead of asking the agent to compare two renders, bake the diff straight into the after-image. Red washes where ink disappeared, green where it arrived, amber where the glyph shifted — all over the actual braille render. One attachment, one pass, no side-by-side bookkeeping."
+- generic
+  - StaticText "$ "
+  - code
+    - StaticText "agent-ascii diff before.png after.png --annotate --out delta.png"
+- figure
+  - Figcaption
+    - StaticText "WEBPAGE · HERO DRIFT"
+    - StaticText "+"
+    - StaticText "427"
+    - StaticText " −"
+    - StaticText "313"
+    - StaticText " ~"
+    - StaticText "309"
+  - image "annotated webpage diff"
+- figure
+  - Figcaption
+    - StaticText "SIGNUP FORM"
+    - StaticText "+"
+    - StaticText "343"
+    - StaticText " −"
+    - StaticText "90"
+  - image "annotated x-signup · banner + dropped CTA"
+- figure
+  - Figcaption
+    - StaticText "IPHONE LINEUP"
+    - StaticText "+"
+    - StaticText "162"
+    - StaticText " −"
+    - StaticText "338"
+  - image "annotated iphone · banner + masked stack"
+- figure
+  - Figcaption
+    - StaticText "WATCH HERO"
+    - StaticText "+"
+    - StaticText "63"
+    - StaticText " −"
+    - StaticText "49"
+  - image "annotated watch · narrow banner"
+- StaticText "delivery"
+- StaticText "attachments"
+- StaticText "tokens"
+- StaticText "what the agent has to do"
+- StaticText "side-by-side (atlas)"
+- StaticText "3 images"
+- StaticText "3 × vision"
+- StaticText "align, compare, locate the drift"
+- StaticText "annotated render"
+- StaticText "1 image"
+- StaticText "1 × vision"
+- StaticText "read the colour overlay"
+- StaticText "05"
+- StaticText "AGENT VIEW"
+- heading "What the agent actually reads." [level=3, ref=e8]
+- paragraph
+  - StaticText "Same diff, three deliveries. In the terminal, unified braille diffs read like regular text patches. In a pull request, a one-line ninths summary locates the drift for 15 tokens. Raw PNGs are the most expensive and the least precise — they need the model's attention budget to tell you anything."
+- StaticText "TERMINAL · ZSH"
+- StaticText "AGENT-ASCII DIFF --TEXT"
+- code
+  - StaticText "$ agent-ascii diff --text before.txt after.txt\n"
+  - StaticText "--- before"
+  - StaticText "+++ after"
+  - StaticText "@@ -1,5 +1,21 @@"
+  - StaticText "-⡤⣾⣿⣿⣿⣿⣿⣿⣷⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"
+  - StaticText "-⣟⣿⣿⣿⣿⣿⣿⣿⣟⣷⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶⣶"
+  - StaticText "+⡤⣾⣿⣿⣿⣿⣿⣷⣶⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"
+  - StaticText "+⣿⣿⣯⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿"
+  - StaticText "+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰"
+  - StaticText "+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣤⣤⣤⣤⣤⣬"
+  - StaticText "...  60 lines,  5,891 tokens,  10.0 KB"
+  - StaticText "exit 1  (diff present)"
+- StaticText "PULL REQUEST · REVIEW COMMENT"
+- StaticText "#482 · LAYOUT DRIFT"
+- StaticText "AA"
+- StaticText "AGENT-ASCII[BOT]"
+- StaticText "COMMENTED"
+- StaticText "· 2 MIN AGO"
+- paragraph
+  - StaticText "Hero band drifted48.6% of cells vs baseline at"
+  - code
+    - StaticText "--width 60 --layout"
+  - StaticText "."
+- StaticText "TC"
+- StaticText "207"
+- StaticText "TR"
+- StaticText "38"
+- StaticText "TL"
+- StaticText "54"
+- StaticText "MC"
+- StaticText "126"
+- StaticText "MR"
+- StaticText "51"
+- StaticText "ML"
+- StaticText "73"
+- StaticText "BC"
+- StaticText "120"
+- StaticText "BR"
+- StaticText "71"
+- StaticText "BL"
+- StaticText "127"
+- paragraph
+  - StaticText "Delivered in15 tokens — a sparkline of where the diff lives, not the diff itself. Re-render at width 100 for precision."
+- StaticText "DIFF STRATEGY · COST / SIGNAL"
+- StaticText "strategy"
+- StaticText "bytes"
+- StaticText "tokens"
+- StaticText "format"
+- StaticText "locates"
+- StaticText "unified text-diff"
+- StaticText "10.0 KB"
+- StaticText "5,891"
+- StaticText "yes · text"
+- StaticText "line-accurate"
+- StaticText "full coord list"
+- StaticText "8.2 KB"
+- StaticText "6,691"
+- StaticText "yes · text"
+- StaticText "cell-accurate"
+- StaticText "9-box summary"
+- StaticText "30 B"
+- StaticText "15"
+- StaticText "yes · text"
+- StaticText "coarse ninths"
+- StaticText "two PNG renders"
+- StaticText "15.4 KB"
+- StaticText "~vision"
+- StaticText "image only"
+- StaticText "via model attention"
+- contentinfo
+  - StaticText "AGENT-ASCII · APACHE-2.0 · 2026"
+  - StaticText "TYPESET IN JETBRAINS MONO & MANROPE"
+  - link "GITHUB.COM/VINNIAI/AGENT-ASCII ↗" [ref=e9]
+- button "Open Next.js Dev Tools" [expanded=false, ref=e29]
+  - image
+- alert

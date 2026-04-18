@@ -1,0 +1,10 @@
+url_label,url,strategy,bytes,tokens,median_ms
+agent-ascii-home,http://localhost:3000/,dom,15666,4630,175.2
+agent-ascii-home,http://localhost:3000/,ascii,7230,6066,264.7
+agent-ascii-home,http://localhost:3000/,both,7656,6249,427.9
+example-com,https://example.com/,dom,219,55,163.2
+example-com,https://example.com/,ascii,7230,1534,203.9
+example-com,https://example.com/,both,7301,1568,363.0
+npm-agent-ascii,https://www.npmjs.com/package/agent-ascii,dom,29241,6948,178.8
+npm-agent-ascii,https://www.npmjs.com/package/agent-ascii,ascii,7230,5626,217.7
+npm-agent-ascii,https://www.npmjs.com/package/agent-ascii,both,8898,6442,376.9

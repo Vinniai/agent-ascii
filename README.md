@@ -131,11 +131,11 @@ This runs [`scripts/example-webpage-diff.sh`](scripts/example-webpage-diff.sh): 
 ### Basic ASCII (`--width 80`)
 
 ```
-agent-ascii examples/screenshots/google-desktop.png --width 80
+agent-ascii examples/screenshots/apple-desktop.png --width 80
 ```
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/01-basic.png" width="700">
+  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/compare-01-basic.png" width="700">
 </p>
 
 ### Complex character range (`--complex`)
@@ -143,11 +143,11 @@ agent-ascii examples/screenshots/google-desktop.png --width 80
 Uses a wider ASCII character set for more tonal detail.
 
 ```
-agent-ascii examples/screenshots/google-desktop.png --width 80 --complex
+agent-ascii examples/screenshots/apple-desktop.png --width 80 --complex
 ```
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/02-complex.png" width="700">
+  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/compare-02-complex.png" width="700">
 </p>
 
 ### Braille (`--braille`)
@@ -155,11 +155,11 @@ agent-ascii examples/screenshots/google-desktop.png --width 80 --complex
 Uses Unicode braille patterns — terminal must support UTF-8.
 
 ```
-agent-ascii examples/screenshots/google-desktop.png --width 80 --braille
+agent-ascii examples/screenshots/apple-desktop.png --width 80 --braille
 ```
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/03-braille.png" width="700">
+  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/compare-03-braille.png" width="700">
 </p>
 
 ### Braille + dither (`--braille`; dither on by default)
@@ -167,11 +167,11 @@ agent-ascii examples/screenshots/google-desktop.png --width 80 --braille
 Dithering spreads pixel error across neighbors, giving sharper edges in braille mode. **Dithering is enabled by default** with `--braille` (`-D` / `--dither`; use `--dither=false` to match the previous off-by-default behavior).
 
 ```
-agent-ascii examples/screenshots/google-desktop.png --width 80 --braille
+agent-ascii examples/screenshots/apple-desktop.png --width 80 --braille
 ```
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/04-braille-dither.png" width="700">
+  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/compare-04-braille-dither.png" width="700">
 </p>
 
 ### Layout mode (`--layout`)
@@ -179,11 +179,11 @@ agent-ascii examples/screenshots/google-desktop.png --width 80 --braille
 Optimized for inspecting UI screenshots and web pages — auto-selects braille with adaptive contrast and dithering.
 
 ```
-agent-ascii examples/screenshots/google-desktop.png --width 80 --layout
+agent-ascii examples/screenshots/apple-desktop.png --width 80 --layout
 ```
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/05-layout.png" width="700">
+  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/compare-05-layout.png" width="700">
 </p>
 
 ### Negative (`--negative`)
@@ -195,7 +195,7 @@ agent-ascii examples/screenshots/apple-mobile.png --width 60 --negative
 ```
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/06-negative.png" width="500">
+  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/compare-06-negative.png" width="500">
 </p>
 
 ### Custom character map (`--map`)
@@ -207,17 +207,17 @@ agent-ascii examples/screenshots/apple-mobile.png --width 60 --map " .-=+#@"
 ```
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/07-complex-map.png" width="500">
+  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/compare-07-complex-map.png" width="500">
 </p>
 
 ### Braille + dither on mobile (`--braille`)
 
 ```
-agent-ascii examples/screenshots/apple-mobile.png --width 60 --braille
+agent-ascii examples/screenshots/x-mobile.png --width 60 --braille
 ```
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/08-braille-dither-mobile.png" width="500">
+  <img src="https://raw.githubusercontent.com/Vinniai/agent-ascii/main/examples/outputs/compare-08-braille-dither-mobile.png" width="500">
 </p>
 
 ---
@@ -277,7 +277,7 @@ Compare two rendered outputs with a **unified diff** (similar to `git diff`). AN
 **Two images (or URLs)** — same flags apply to both conversions; `--save-*` and `--only-save` are ignored for `diff`:
 
 ```bash
-agent-ascii diff examples/screenshots/apple-mobile.png examples/screenshots/google-desktop.png --width 40
+agent-ascii diff examples/screenshots/apple-desktop.png examples/screenshots/apple-mobile.png --width 40
 ```
 
 **Two saved text files** (e.g. from `--save-txt --only-save`):

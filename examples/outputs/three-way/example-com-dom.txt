@@ -1,0 +1,5 @@
+- heading "Example Domain" [level=1, ref=e1]
+- paragraph
+  - StaticText "This domain is for use in documentation examples without needing permission. Avoid use in operations."
+- paragraph
+  - link "Learn more" [ref=e2]

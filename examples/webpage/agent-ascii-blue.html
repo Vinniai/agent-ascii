@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>agent-ascii — blue accent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    :root {
+      --accent: #3b82f6;      /* blue (same luminance tier as emerald) */
+      --accent-soft: #eff6ff;
+      --ink: #0a0a0a;
+      --ink-muted: #4b5563;
+      --ink-faint: #6b7280;
+      --line: #e5e7eb;
+      --panel: #f8fafc;
+    }
+    html, body {
+      margin: 0;
+      min-height: 100vh;
+      background: #ffffff;
+      color: var(--ink);
+      font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+    }
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--line);
+    }
+    nav .brand {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: -0.03em;
+    }
+    nav ul {
+      list-style: none; display: flex; gap: 1.5rem; padding: 0; margin: 0;
+      font-size: 0.85rem; color: var(--ink-muted); font-weight: 500;
+    }
+    nav li.active { color: var(--ink); }
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 2rem 2rem;
+    }
+    .card {
+      text-align: center;
+      max-width: 52ch;
+    }
+    .eyebrow {
+      display: inline-block;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-soft);
+      padding: 0.3rem 0.7rem;
+      border-radius: 999px;
+      margin-bottom: 1.25rem;
+    }
+    h1 {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: clamp(2.6rem, 7.5vw, 4.5rem);
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      margin: 0;
+    }
+    .lead {
+      margin: 1.25rem auto 1.75rem;
+      font-size: 1.05rem;
+      line-height: 1.55;
+      color: var(--ink-muted);
+      max-width: 48ch;
+    }
+    .actions { display: inline-flex; gap: 0.75rem; }
+    button {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.85rem; font-weight: 600;
+      padding: 0.7rem 1.15rem; border-radius: 10px; cursor: pointer;
+    }
+    .primary {
+      background: var(--accent); color: white; border: 1px solid var(--accent);
+    }
+    .secondary {
+      background: white; color: var(--ink); border: 1px solid var(--line);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      padding: 1rem 2rem 3rem;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .feature {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 1.25rem;
+    }
+    .feature .dot {
+      width: 10px; height: 10px; border-radius: 999px;
+      background: var(--accent); display: inline-block; margin-bottom: 0.75rem;
+    }
+    .feature h3 {
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.95rem; font-weight: 700; margin: 0 0 0.4rem;
+    }
+    .feature p {
+      font-size: 0.85rem; line-height: 1.5; color: var(--ink-muted); margin: 0;
+    }
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 0.9rem 2rem;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: 0.72rem;
+      color: var(--ink-faint);
+      display: flex; justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <nav>
+      <div class="brand">agent-ascii</div>
+      <ul>
+        <li class="active">Overview</li>
+        <li>Docs</li>
+        <li>CLI</li>
+        <li>GitHub</li>
+      </ul>
+    </nav>
+    <section class="hero">
+      <div class="card">
+        <span class="eyebrow">layout demo · centered</span>
+        <h1>agent-ascii</h1>
+        <p class="lead">Image &amp; screenshot renderer for agents. Frame layouts, diff visually, stay cheap on tokens.</p>
+        <div class="actions">
+          <button class="primary">npx agent-ascii</button>
+          <button class="secondary">View examples</button>
+        </div>
+      </div>
+    </section>
+    <section class="grid">
+      <article class="feature">
+        <span class="dot"></span>
+        <h3>Layout mode</h3>
+        <p>Braille render tuned for UI screenshots. Adaptive contrast, dithering on.</p>
+      </article>
+      <article class="feature">
+        <span class="dot"></span>
+        <h3>Unified diff</h3>
+        <p>Git-style text diffs between two renders — PR-ready visual drift.</p>
+      </article>
+      <article class="feature">
+        <span class="dot"></span>
+        <h3>CI drift gate</h3>
+        <p>History tracking with <code>--diff-last-fail</code> to flag layout regressions.</p>
+      </article>
+    </section>
+    <footer>
+      <span>© 2026 · Apache 2.0</span>
+      <span>v1.0.2</span>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,695 @@
+- banner
+  - generic
+    - generic
+      - StaticText "skip to:"
+      - link "skip to content" [ref=e11]
+        - StaticText "content"
+      - link "skip to package search" [ref=e12]
+        - StaticText "package search"
+      - link "skip to sign in" [ref=e13]
+        - StaticText "sign in"
+    - button "Light mode — click for dark" [ref=e2]
+    - navigation "Product Navigation" [ref=e3]
+      - list
+        - listitem [level=1]
+          - link "Pro" [ref=e54]
+        - listitem [level=1]
+          - link "Teams" [ref=e55]
+        - listitem [level=1]
+          - link "Pricing" [ref=e56]
+        - listitem [level=1]
+          - link "Documentation" [ref=e57]
+  - StaticText "npm"
+  - link "Npm" [ref=e4]
+  - generic
+    - generic
+      - generic
+        - combobox "Search packages" [expanded=false, ref=e58]
+    - button "Search" [ref=e14]
+  - link "Sign Up" [ref=e5]
+  - link "Sign In" [ref=e6]
+- main
+  - generic
+    - heading "agent-ascii" [level=1, ref=e7]
+      - StaticText "agent-ascii"
+    - generic
+      - StaticText "1.0.2•"
+    - StaticText "Public"
+    - generic
+      - StaticText "•Published "
+      - time
+        - StaticText "a day ago"
+    - tablist
+      - tab " Readme" [selected, ref=e15]
+        - StaticText " Readme"
+      - tab "Code Beta" [ref=e16]
+        - StaticText "Code Beta"
+      - tab "0 Dependencies" [ref=e17]
+        - StaticText "0 Dependencies"
+      - tab "0 Dependents" [ref=e18]
+        - StaticText "0 Dependents"
+      - tab "3 Versions" [ref=e19]
+        - StaticText "3 Versions"
+    - generic
+      - tabpanel " Readme"
+        - article
+          - generic
+            - heading "agent-ascii" [level=1, ref=e60]
+            - link "Permalink: agent-ascii" [ref=e61]
+            - paragraph
+              - link "release-version" [ref=e136]
+                - image "release-version"
+              - StaticText " "
+              - link "license" [ref=e137]
+                - image "license"
+              - StaticText " "
+              - link "language" [ref=e138]
+                - image "language"
+              - StaticText " "
+              - link "release-downloads" [ref=e139]
+                - image "release-downloads"
+            - paragraph
+              - StaticText "Convert images and GIFs into ASCII art in your terminal. Available on Windows, Linux and macOS — no Go required via npx."
+            - paragraph
+              - StaticText "Supports both ASCII character maps and braille patterns. Optimized for rendering UI screenshots, web pages, and photos."
+            - blockquote
+              - paragraph
+                - StaticText "Inspired by "
+                - link "ascii-image-converter" [ref=e150]
+                - StaticText " by Zoraiz Hassan."
+            - paragraph
+              - strong
+                - StaticText "Supported input formats:"
+              - StaticText " JPEG · PNG · BMP · WEBP · TIFF · GIF"
+            - separator
+            - heading "Table of Contents" [level=2, ref=e62]
+            - link "Permalink: Table of Contents" [ref=e63]
+            - list
+              - listitem [level=1]
+                - ListMarker "• "
+                - link "Installation" [ref=e151]
+                - list
+                  - listitem [level=2]
+                    - ListMarker "◦ "
+                    - link "npx" [ref=e241]
+                  - listitem [level=2]
+                    - ListMarker "◦ "
+                    - link "npm Global Install" [ref=e242]
+                  - listitem [level=2]
+                    - ListMarker "◦ "
+                    - link "GitHub Action" [ref=e243]
+                  - listitem [level=2]
+                    - ListMarker "◦ "
+                    - link "Agent Skill" [ref=e244]
+                  - listitem [level=2]
+                    - ListMarker "◦ "
+                    - link "Go" [ref=e245]
+                  - listitem [level=2]
+                    - ListMarker "◦ "
+                    - link "Release Binaries" [ref=e246]
+              - listitem [level=1]
+                - ListMarker "• "
+                - link "Examples" [ref=e152]
+              - listitem [level=1]
+                - ListMarker "• "
+                - link "CLI Usage" [ref=e153]
+                - list
+                  - listitem [level=2]
+                    - ListMarker "◦ "
+                    - link "Flags" [ref=e247]
+              - listitem [level=1]
+                - ListMarker "• "
+                - link "Automation" [ref=e154]
+              - listitem [level=1]
+                - ListMarker "• "
+                - link "Library Usage" [ref=e155]
+              - listitem [level=1]
+                - ListMarker "• "
+                - link "Packages Used" [ref=e156]
+              - listitem [level=1]
+                - ListMarker "• "
+                - link "License" [ref=e157]
+            - separator
+            - heading "Installation" [level=2, ref=e64]
+            - link "Permalink: Installation" [ref=e65]
+            - heading "npx" [level=3, ref=e66]
+            - link "Permalink: npx" [ref=e67]
+            - paragraph
+              - StaticText "Run directly without installing:"
+            - generic [ref=e68] focusable [tabindex]
+              - code
+                - StaticText "npx agent-ascii ./image.png\n"
+            - paragraph
+              - StaticText "The package downloads a prebuilt OS-specific binary on first run. No Go installation required."
+            - heading "npm Global Install" [level=3, ref=e69]
+            - link "Permalink: npm Global Install" [ref=e70]
+            - generic [ref=e71] focusable [tabindex]
+              - code
+                - StaticText "npm install --global agent-ascii\n"
+            - paragraph
+              - StaticText "Then run:"
+            - generic [ref=e72] focusable [tabindex]
+              - code
+                - StaticText "agent-ascii ./image.png\n"
+            - heading "GitHub Action" [level=3, ref=e73]
+            - link "Permalink: GitHub Action" [ref=e74]
+            - generic [ref=e75] focusable [tabindex]
+              - StaticText "- uses: Vinniai/agent-ascii@v1\n  with:\n    paths: |\n      examples/screenshots/apple-mobile.png\n      examples/screenshots/google-desktop.png\n    flags: --width 72\n    output-dir: .agent-ascii-out"
+            - paragraph
+              - StaticText "By default the action saves "
+              - code
+                - StaticText ".txt"
+              - StaticText " artifacts with "
+              - code
+                - StaticText "--only-save"
+              - StaticText "."
+            - heading "Agent Skill" [level=3, ref=e76]
+            - link "Permalink: Agent Skill" [ref=e77]
+            - generic [ref=e78] focusable [tabindex]
+              - StaticText "bash <(curl -fsSL https://raw.githubusercontent.com/Vinniai/agent-ascii/main/scripts/install-skill.sh)"
+            - paragraph
+              - StaticText "Manual install target:"
+            - generic [ref=e79] focusable [tabindex]
+              - StaticText "bash <(curl -fsSL https://raw.githubusercontent.com/Vinniai/agent-ascii/main/scripts/install-skill.sh) --dir \"$HOME/.codex/skills\""
+            - heading "Go" [level=3, ref=e80]
+            - link "Permalink: Go" [ref=e81]
+            - generic [ref=e82] focusable [tabindex]
+              - code
+                - StaticText "go install github.com/Vinniai/agent-ascii@latest\n"
+            - heading "Release Binaries" [level=3, ref=e83]
+            - link "Permalink: Release Binaries" [ref=e84]
+            - paragraph
+              - StaticText "Download for your platform from the "
+              - link "releases page" [ref=e140]
+              - StaticText ", extract, and copy to your "
+              - code
+                - StaticText "PATH"
+              - StaticText ":"
+            - generic [ref=e85] focusable [tabindex]
+              - StaticText "# macOS / Linux\nsudo cp agent-ascii /usr/local/bin/\n\n# Windows — place agent-ascii.exe in a directory on your PATH"
+            - separator
+            - heading "Examples" [level=2, ref=e86]
+            - link "Permalink: Examples" [ref=e87]
+            - paragraph
+              - StaticText "All examples use real screenshots from "
+              - code
+                - StaticText "examples/screenshots/"
+              - StaticText ". Decrease terminal font size or increase width for best quality."
+            - heading "Basic ASCII (--width 80)" [level=3, ref=e88]
+              - StaticText "Basic ASCII ("
+              - code
+                - StaticText "--width 80"
+              - StaticText ")"
+            - link "Permalink: Basic ASCII (--width 80)" [ref=e89]
+            - generic [ref=e90] focusable [tabindex]
+              - code
+                - StaticText "agent-ascii examples/screenshots/google-desktop.png --width 80\n"
+            - paragraph
+              - link [ref=e141]
+                - image
+            - heading "Complex character range (--complex)" [level=3, ref=e91]
+              - StaticText "Complex character range ("
+              - code
+                - StaticText "--complex"
+              - StaticText ")"
+            - link "Permalink: Complex character range (--complex)" [ref=e92]
+            - paragraph
+              - StaticText "Uses a wider ASCII character set for more tonal detail."
+            - generic [ref=e93] focusable [tabindex]
+              - code
+                - StaticText "agent-ascii examples/screenshots/google-desktop.png --width 80 --complex\n"
+            - paragraph
+              - link [ref=e142]
+                - image
+            - heading "Braille (--braille)" [level=3, ref=e94]
+              - StaticText "Braille ("
+              - code
+                - StaticText "--braille"
+              - StaticText ")"
+            - link "Permalink: Braille (--braille)" [ref=e95]
+            - paragraph
+              - StaticText "Uses Unicode braille patterns — terminal must support UTF-8."
+            - generic [ref=e96] focusable [tabindex]
+              - code
+                - StaticText "agent-ascii examples/screenshots/google-desktop.png --width 80 --braille\n"
+            - paragraph
+              - link [ref=e143]
+                - image
+            - heading "Braille + dither (--braille --dither)" [level=3, ref=e97]
+              - StaticText "Braille + dither ("
+              - code
+                - StaticText "--braille --dither"
+              - StaticText ")"
+            - link "Permalink: Braille + dither (--braille --dither)" [ref=e98]
+            - paragraph
+              - StaticText "Dithering spreads pixel error across neighbors, giving sharper edges in braille mode."
+            - generic [ref=e99] focusable [tabindex]
+              - code
+                - StaticText "agent-ascii examples/screenshots/google-desktop.png --width 80 --braille --dither\n"
+            - paragraph
+              - link [ref=e144]
+                - image
+            - heading "Layout mode (--layout)" [level=3, ref=e100]
+              - StaticText "Layout mode ("
+              - code
+                - StaticText "--layout"
+              - StaticText ")"
+            - link "Permalink: Layout mode (--layout)" [ref=e101]
+            - paragraph
+              - StaticText "Optimized for inspecting UI screenshots and web pages — auto-selects braille with adaptive contrast and dithering."
+            - generic [ref=e102] focusable [tabindex]
+              - code
+                - StaticText "agent-ascii examples/screenshots/google-desktop.png --width 80 --layout\n"
+            - paragraph
+              - link [ref=e145]
+                - image
+            - heading "Negative (--negative)" [level=3, ref=e103]
+              - StaticText "Negative ("
+              - code
+                - StaticText "--negative"
+              - StaticText ")"
+            - link "Permalink: Negative (--negative)" [ref=e104]
+            - paragraph
+              - StaticText "Inverts the character density, useful for light-background images."
+            - generic [ref=e105] focusable [tabindex]
+              - code
+                - StaticText "agent-ascii examples/screenshots/apple-mobile.png --width 60 --negative\n"
+            - paragraph
+              - link [ref=e146]
+                - image
+            - heading "Custom character map (--map)" [level=3, ref=e106]
+              - StaticText "Custom character map ("
+              - code
+                - StaticText "--map"
+              - StaticText ")"
+            - link "Permalink: Custom character map (--map)" [ref=e107]
+            - paragraph
+              - StaticText "Define your own character gradient from darkest to lightest."
+            - generic [ref=e108] focusable [tabindex]
+              - code
+                - StaticText "agent-ascii examples/screenshots/apple-mobile.png --width 60 --map \" .-=+#@\"\n"
+            - paragraph
+              - link [ref=e147]
+                - image
+            - heading "Braille + dither on mobile (--braille --dither)" [level=3, ref=e109]
+              - StaticText "Braille + dither on mobile ("
+              - code
+                - StaticText "--braille --dither"
+              - StaticText ")"
+            - link "Permalink: Braille + dither on mobile (--braille --dither)" [ref=e110]
+            - generic [ref=e111] focusable [tabindex]
+              - code
+                - StaticText "agent-ascii examples/screenshots/apple-mobile.png --width 60 --braille --dither\n"
+            - paragraph
+              - link [ref=e148]
+                - image
+            - separator
+            - heading "CLI Usage" [level=2, ref=e112]
+            - link "Permalink: CLI Usage" [ref=e113]
+            - blockquote
+              - paragraph
+                - strong
+                  - StaticText "Tip:"
+                - StaticText " Decrease font size or zoom out your terminal for maximum quality."
+            - generic [ref=e114] focusable [tabindex]
+              - code
+                - StaticText "agent-ascii [image paths/urls or piped stdin] [flags]\n"
+            - paragraph
+              - StaticText "Piped input is also supported:"
+            - generic [ref=e115] focusable [tabindex]
+              - StaticText "cat myImage.png | agent-ascii -"
+            - heading "Flags" [level=3, ref=e116]
+            - link "Permalink: Flags" [ref=e117]
+            - table
+              - rowgroup
+                - row
+                  - columnheader "Flag" [ref=e235]
+                  - columnheader "Short" [ref=e236]
+                  - columnheader "Description" [ref=e237]
+              - row
+                - cell "--color" [ref=e158]
+                  - code
+                    - StaticText "--color"
+                - cell "-C" [ref=e159]
+                  - code
+                    - StaticText "-C"
+                - cell "Display in original image colors (requires 24-bit/8-bit terminal)" [ref=e160]
+              - row
+                - cell "--color-bg" [ref=e161]
+                  - code
+                    - StaticText "--color-bg"
+                - cell
+                - cell "Apply color to character background instead of foreground" [ref=e162]
+              - row
+                - cell "--braille" [ref=e163]
+                  - code
+                    - StaticText "--braille"
+                - cell "-b" [ref=e164]
+                  - code
+                    - StaticText "-b"
+                - cell "Use Unicode braille characters instead of ASCII" [ref=e165]
+              - row
+                - cell "--dither" [ref=e166]
+                  - code
+                    - StaticText "--dither"
+                - cell
+                - cell "Apply dithering for braille conversion" [ref=e167]
+              - row
+                - cell "--threshold N" [ref=e168]
+                  - code
+                    - StaticText "--threshold N"
+                - cell
+                - cell "Braille on/off threshold (0–255, default: 128)" [ref=e169]
+              - row
+                - cell "--layout" [ref=e170]
+                  - code
+                    - StaticText "--layout"
+                - cell
+                - cell "Optimize for UI/webpage screenshot inspection" [ref=e171]
+              - row
+                - cell "--complex" [ref=e172]
+                  - code
+                    - StaticText "--complex"
+                - cell "-c" [ref=e173]
+                  - code
+                    - StaticText "-c"
+                - cell "Extended ASCII character range for more detail" [ref=e174]
+              - row
+                - cell "--map \"chars\"" [ref=e175]
+                  - code
+                    - StaticText "--map \"chars\""
+                - cell "-m" [ref=e176]
+                  - code
+                    - StaticText "-m"
+                - cell "Custom character gradient, darkest to lightest" [ref=e177]
+              - row
+                - cell "--grayscale" [ref=e178]
+                  - code
+                    - StaticText "--grayscale"
+                - cell "-g" [ref=e179]
+                  - code
+                    - StaticText "-g"
+                - cell "Grayscale output" [ref=e180]
+              - row
+                - cell "--negative" [ref=e181]
+                  - code
+                    - StaticText "--negative"
+                - cell "-n" [ref=e182]
+                  - code
+                    - StaticText "-n"
+                - cell "Invert colors" [ref=e183]
+              - row
+                - cell "--width N" [ref=e184]
+                  - code
+                    - StaticText "--width N"
+                - cell "-W" [ref=e185]
+                  - code
+                    - StaticText "-W"
+                - cell "Output width in characters (maintains aspect ratio)" [ref=e186]
+              - row
+                - cell "--height N" [ref=e187]
+                  - code
+                    - StaticText "--height N"
+                - cell "-H" [ref=e188]
+                  - code
+                    - StaticText "-H"
+                - cell "Output height in characters (maintains aspect ratio)" [ref=e189]
+              - row
+                - cell "--dimensions W,H" [ref=e190]
+                  - code
+                    - StaticText "--dimensions W,H"
+                - cell "-d" [ref=e191]
+                  - code
+                    - StaticText "-d"
+                - cell "Explicit width and height in characters" [ref=e192]
+              - row
+                - cell "--full" [ref=e193]
+                  - code
+                    - StaticText "--full"
+                - cell "-f" [ref=e194]
+                  - code
+                    - StaticText "-f"
+                - cell "Fill terminal width" [ref=e195]
+              - row
+                - cell "--flipX" [ref=e196]
+                  - code
+                    - StaticText "--flipX"
+                - cell "-x" [ref=e197]
+                  - code
+                    - StaticText "-x"
+                - cell "Flip horizontally" [ref=e198]
+              - row
+                - cell "--flipY" [ref=e199]
+                  - code
+                    - StaticText "--flipY"
+                - cell "-y" [ref=e200]
+                  - code
+                    - StaticText "-y"
+                - cell "Flip vertically" [ref=e201]
+              - row
+                - cell "--save-img path" [ref=e202]
+                  - code
+                    - StaticText "--save-img path"
+                - cell "-s" [ref=e203]
+                  - code
+                    - StaticText "-s"
+                - cell "Save as PNG to path" [ref=e204]
+              - row
+                - cell "--save-txt path" [ref=e205]
+                  - code
+                    - StaticText "--save-txt path"
+                - cell
+                - cell "Save as text file" [ref=e206]
+              - row
+                - cell "--save-gif path" [ref=e207]
+                  - code
+                    - StaticText "--save-gif path"
+                - cell
+                - cell "Save GIF as ASCII art GIF" [ref=e208]
+              - row
+                - cell "--save-bg R,G,B,A" [ref=e209]
+                  - code
+                    - StaticText "--save-bg R,G,B,A"
+                - cell
+                - cell "Background color for saved images (RGBA)" [ref=e210]
+              - row
+                - cell "--font path" [ref=e211]
+                  - code
+                    - StaticText "--font path"
+                - cell
+                - cell "Font .ttf file for saved images" [ref=e212]
+              - row
+                - cell "--font-color R,G,B" [ref=e213]
+                  - code
+                    - StaticText "--font-color R,G,B"
+                - cell
+                - cell "Font color for output and saved images" [ref=e214]
+              - row
+                - cell "--only-save" [ref=e215]
+                  - code
+                    - StaticText "--only-save"
+                - cell
+                - cell "Skip terminal output when saving" [ref=e216]
+              - row
+                - cell "--formats" [ref=e217]
+                  - code
+                    - StaticText "--formats"
+                - cell
+                - cell "Show supported input formats" [ref=e218]
+            - separator
+            - heading "Automation" [level=2, ref=e118]
+            - link "Permalink: Automation" [ref=e119]
+            - paragraph
+              - StaticText "Three automation surfaces ship with this repo:"
+            - table
+              - rowgroup
+                - row
+                  - columnheader "Surface" [ref=e238]
+                  - columnheader "Path" [ref=e239]
+                  - columnheader "Purpose" [ref=e240]
+              - row
+                - cell "GitHub Action" [ref=e219]
+                - cell "action.yml" [ref=e220]
+                  - code
+                    - StaticText "action.yml"
+                - cell "Reusable action for CI and PR workflows" [ref=e221]
+              - row
+                - cell "Agent Skill" [ref=e222]
+                - cell "skills/agent-ascii/SKILL.md" [ref=e223]
+                  - code
+                    - StaticText "skills/agent-ascii/SKILL.md"
+                - cell "Public skill for AI agent setups" [ref=e224]
+              - row
+                - cell "Agent Rules" [ref=e225]
+                - cell "AGENTS.md" [ref=e226]
+                  - code
+                    - StaticText "AGENTS.md"
+                - cell "Contributor and in-repo agent guidelines" [ref=e227]
+            - paragraph
+              - StaticText "Use screenshots in "
+              - code
+                - StaticText "examples/screenshots/"
+              - StaticText " for repeatable smoke tests in CI."
+            - separator
+            - heading "Library Usage" [level=2, ref=e120]
+            - link "Permalink: Library Usage" [ref=e121]
+            - generic [ref=e122] focusable [tabindex]
+              - code
+                - StaticText "go get -u github.com/Vinniai/agent-ascii/aic_package\n"
+            - generic [ref=e123] focusable [tabindex]
+              - StaticText "package main\n\nimport (\n\t\"fmt\"\n\t\"github.com/Vinniai/agent-ascii/aic_package\"\n)\n\nfunc main() {\n\tflags := aic_package.DefaultFlags()\n\tflags.Width = 80\n\tflags.Braille = true\n\tflags.Dither = true\n\n\tasciiArt, err := aic_package.Convert(\"myImage.png\", flags)\n\tif err != nil {\n\t\tfmt.Println(err)\n\t\treturn\n\t}\n\tfmt.Print(asciiArt)\n}"
+            - blockquote
+              - paragraph
+                - strong
+                  - StaticText "Note:"
+                - StaticText " For headless environments (web servers, CI), set at least one of "
+                - code
+                  - StaticText "flags.Width"
+                - StaticText ", "
+                - code
+                  - StaticText "flags.Height"
+                - StaticText ", or "
+                - code
+                  - StaticText "flags.Dimensions"
+                - StaticText " — terminal size detection won't be available."
+            - separator
+            - heading "Packages Used" [level=2, ref=e124]
+            - link "Permalink: Packages Used" [ref=e125]
+            - list
+              - listitem [level=1]
+                - ListMarker "• "
+                - link "github.com/spf13/cobra" [ref=e228]
+              - listitem [level=1]
+                - ListMarker "• "
+                - link "github.com/fogleman/gg" [ref=e229]
+              - listitem [level=1]
+                - ListMarker "• "
+                - link "github.com/mitchellh/go-homedir" [ref=e230]
+              - listitem [level=1]
+                - ListMarker "• "
+                - link "github.com/nathan-fiscaletti/consolesize-go" [ref=e231]
+              - listitem [level=1]
+                - ListMarker "• "
+                - link "github.com/disintegration/imaging" [ref=e232]
+              - listitem [level=1]
+                - ListMarker "• "
+                - link "github.com/gookit/color" [ref=e233]
+              - listitem [level=1]
+                - ListMarker "• "
+                - link "github.com/makeworld-the-better-one/dither" [ref=e234]
+            - separator
+            - heading "License" [level=2, ref=e126]
+            - link "Permalink: License" [ref=e127]
+            - paragraph
+              - link "Apache-2.0" [ref=e149]
+              - StaticText " © 2021 Zoraiz Hassan"
+        - heading "Readme" [level=2, ref=e32]
+        - heading "Keywords" [level=3, ref=e33]
+        - list
+          - listitem [level=1]
+            - link "ascii" [ref=e128]
+          - listitem [level=1]
+            - link "ascii-art" [ref=e129]
+          - listitem [level=1]
+            - link "cli" [ref=e130]
+          - listitem [level=1]
+            - link "gif" [ref=e131]
+          - listitem [level=1]
+            - link "image" [ref=e132]
+          - listitem [level=1]
+            - link "braille" [ref=e133]
+          - listitem [level=1]
+            - link "npx" [ref=e134]
+      - tabpanel
+      - tabpanel
+      - tabpanel "0 Dependencies"
+      - tabpanel "0 Dependents"
+      - tabpanel "3 Versions"
+    - complementary "Package sidebar"
+      - heading "Package Sidebar" [level=2, ref=e20]
+      - heading "Install" [level=3, ref=e21]
+      - paragraph
+        - code
+          - StaticText "npm i agent-ascii"
+        - button "Copy install command line" [ref=e59]
+      - heading "Repository" [level=3, ref=e22]
+      - paragraph
+        - link "Repository github.com/Vinniai/agent-ascii" [ref=e34]
+          - StaticText "github.com/Vinniai/agent-ascii"
+      - heading "Homepage" [level=3, ref=e23]
+      - paragraph
+        - link "Homepage github.com/Vinniai/agent-ascii" [ref=e35]
+          - StaticText "github.com/Vinniai/agent-ascii"
+      - heading "Version" [level=3, ref=e24]
+      - paragraph
+        - StaticText "1.0.2"
+      - heading "License" [level=3, ref=e25]
+      - paragraph
+        - StaticText "Apache-2.0"
+      - heading "Issues" [level=3, ref=e26]
+      - paragraph
+        - link "0" [ref=e36]
+      - heading "Pull Requests" [level=3, ref=e27]
+      - paragraph
+        - link "0" [ref=e37]
+      - heading "Last publish" [level=3, ref=e28]
+      - paragraph
+        - time
+          - StaticText "a day ago"
+      - heading "Collaborators" [level=3, ref=e29]
+      - list "Collaborators"
+        - listitem [level=1]
+          - link "vinniai" [ref=e135]
+            - image "vinniai"
+      - generic
+        - link "Analyze security with Socket" [ref=e38]
+          - strong
+            - StaticText "Analyze security"
+          - StaticText " with Socket"
+        - link "Check bundle size" [ref=e39]
+          - strong
+            - StaticText "Check bundle size"
+        - link "View package health" [ref=e40]
+          - strong
+            - StaticText "View package health"
+        - link "Explore dependencies" [ref=e41]
+          - strong
+            - StaticText "Explore dependencies"
+      - link "Report malware" [ref=e42]
+        - strong
+          - StaticText "Report"
+        - StaticText " malware"
+- contentinfo
+  - heading "Footer" [level=2, ref=e1]
+  - generic
+    - link "Visit npm GitHub page" [ref=e30]
+    - link "GitHub" [ref=e31]
+    - heading "Support" [level=3, ref=e8]
+    - list "Support"
+      - listitem [level=1]
+        - link "Help" [ref=e43]
+      - listitem [level=1]
+        - link "Advisories" [ref=e44]
+      - listitem [level=1]
+        - link "Status" [ref=e45]
+      - listitem [level=1]
+        - link "Contact npm" [ref=e46]
+    - heading "Company" [level=3, ref=e9]
+    - list "Company"
+      - listitem [level=1]
+        - link "About" [ref=e47]
+      - listitem [level=1]
+        - link "Blog" [ref=e48]
+      - listitem [level=1]
+        - link "Press" [ref=e49]
+    - heading "Terms & Policies" [level=3, ref=e10]
+    - list "Terms & Policies"
+      - listitem [level=1]
+        - link "Policies" [ref=e50]
+      - listitem [level=1]
+        - link "Terms of Use" [ref=e51]
+      - listitem [level=1]
+        - link "Code of Conduct" [ref=e52]
+      - listitem [level=1]
+        - link "Privacy" [ref=e53]
+- StaticText "Viewing agent-ascii version 1.0.2"

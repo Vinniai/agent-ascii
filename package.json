@@ -1,6 +1,6 @@
 {
   "name": "agent-ascii",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Convert images and GIFs into terminal ASCII art with a native Go CLI exposed through npx.",
   "license": "Apache-2.0",
   "type": "module",
@@ -19,7 +19,8 @@
     "review:layout": "python3 ./scripts/review-layout.py",
     "skill:install": "bash ./scripts/install-skill.sh",
     "smoke": "bash ./scripts/ci-smoke.sh",
-    "example:webpage": "bash ./scripts/example-webpage-diff.sh"
+    "example:webpage": "bash ./scripts/example-webpage-diff.sh",
+    "example:preview": "bash ./scripts/generate-examples.sh"
   },
   "engines": {
     "node": ">=18"
